@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "827736cb-7cb3-4519-a2d6-a9ad7a3d3ac0",
+  "alias": "SukBirthdaySliderWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "supportsFullBleed": true,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+  "preconfiguredEntries": [
+    {
+      "groupId": "cf066440-0614-43d6-98ae-0b31cf14c7c3",
+      "group": {
+        "default": "SUK Smart Office"
+      },
+      "title": {
+        "default": "SUK Birthday Slider",
+        "ms-my": "SUK Hari Lahir"
+      },
+      "description": {
+        "default": "Read-only birthday slider backed by a SharePoint List.",
+        "ms-my": "Paparan hari lahir baca sahaja menggunakan Senarai SharePoint."
+      },
+      "officeFabricIconFontName": "BirthdayCake",
+      "properties": {
+        "sourceList": "",
+        "birthdayRange": "currentMonth",
+        "maxItems": 500,
+
+        "styleVariant": "compact",
+        "heading": "Selamat Hari Lahir",
+        "emptyMessage": "Tiada sambutan hari lahir untuk tempoh yang dipilih.",
+
+        "autoplay": true,
+        "intervalSeconds": 6,
+        "cardsPerView": 1,
+        "showArrows": true,
+        "showDots": true,
+
+        "showBirthdayDate": true,
+        "showJobTitle": true,
+        "showDepartment": true,
+        "showMessage": true,
+
+        "cardBackgroundColor": "#ffffff",
+        "accentColor": "#0f4c9a",
+        "headingColor": "#08245c",
+        "borderRadius": 8
+      }
+    }
+  ]
+}

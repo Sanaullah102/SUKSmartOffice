@@ -1,0 +1,267 @@
+.sukCustomLayout {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.column {
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.heading {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.description {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 4px;
+  text-decoration: none;
+  background: #0067b8;
+  color: #ffffff;
+
+  &:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
+}
+
+
+/* ==========================================================
+   TEXT
+========================================================== */
+
+.textModule {
+  width: 100%;
+}
+
+
+/* ==========================================================
+   IMAGE
+========================================================== */
+
+.imageModule {
+  width: 100%;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.heroModule {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 4px;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+  color: #ffffff;
+  max-width: 700px;
+
+  h2 {
+    margin: 0 0 12px 0;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+.heroButton {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 18px;
+  background: #ffffff;
+  color: #222222;
+  text-decoration: none;
+  border-radius: 4px;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+
+/* ==========================================================
+   SLIDER
+========================================================== */
+
+.sliderModule {
+  width: 100%;
+}
+
+.sliderContainer {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.sliderImage {
+  display: block;
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.sliderArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+
+  border: 0;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+
+  width: 40px;
+  height: 48px;
+
+  cursor: pointer;
+
+  font-size: 28px;
+}
+
+.leftArrow {
+  left: 10px;
+}
+
+.rightArrow {
+  right: 10px;
+}
+
+.sliderDots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dot,
+.activeDot {
+  width: 10px;
+  height: 10px;
+
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.dot {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.activeDot {
+  background: #ffffff;
+}
+
+
+/* ==========================================================
+   QUICK LINKS
+========================================================== */
+
+.quickLinksModule {
+  width: 100%;
+}
+
+.quickLinksGrid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(130px, 1fr)
+    );
+
+  gap: 12px;
+}
+
+.quickLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 48px;
+
+  padding: 10px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e1e1;
+
+  border-radius: 4px;
+
+  text-decoration: none;
+
+  color: #323130;
+
+  box-sizing: border-box;
+
+  &:hover {
+    text-decoration: none;
+    background: #f5f5f5;
+  }
+}
+
+.quickLinkIcon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+
+/* ==========================================================
+   EMPTY / PLACEHOLDER
+========================================================== */
+
+.emptyModule {
+  width: 100%;
+  min-height: 40px;
+}
+
+.placeholder {
+  padding: 20px;
+  border: 1px dashed #c8c8c8;
+  color: #666666;
+  text-align: center;
+  box-sizing: border-box;
+}

@@ -1,0 +1,91 @@
+
+
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+
+  "id": "2ceaf8d8-4e34-4dbd-90c5-ba850dc4818e",
+
+  "alias": "SukCustomLayoutWebPart",
+
+  "componentType": "WebPart",
+
+  "supportsFullBleed": true,
+
+  "version": "*",
+
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+
+  "preconfiguredEntries": [
+    {
+      "groupId": "cf066440-0614-43d6-98ae-0b31cf14c7c3",
+
+      "group": {
+        "default": "Text, media, and content"
+      },
+
+      "title": {
+        "default": "SUK Custom Layout"
+      },
+
+      "description": {
+        "default": "Configurable full-width layout for SUK Smart Office"
+      },
+
+      "officeFabricIconFontName": "GridViewSmall",
+
+      "properties": {
+        "columnCount": 3,
+
+        "outerPadding": 0,
+
+        "columnGap": 16,
+
+        "borderRadius": 0,
+
+        "backgroundColor": "transparent",
+
+        "minHeight": 0,
+
+        "mobileBreakpoint": 900,
+
+        "verticalAlignment": "stretch",
+
+        "column1Heading": "Akses Pantas",
+
+        "column1Module": "quickLinks",
+
+        "column1Width": 28,
+
+        "column1Padding": 0,
+
+        "column1BackgroundColor": "transparent",
+
+        "column2Heading": "Pengumuman Terkini",
+
+        "column2Module": "text",
+
+        "column2Width": 42,
+
+        "column2Padding": 0,
+
+        "column2BackgroundColor": "transparent",
+
+        "column3Heading": "Kalender & Acara",
+
+        "column3Module": "slider",
+
+        "column3Width": 30,
+
+        "column3Padding": 0,
+
+        "column3BackgroundColor": "transparent"
+      }
+    }
+  ]
+}

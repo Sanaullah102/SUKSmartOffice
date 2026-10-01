@@ -1,0 +1,231 @@
+.wrapper {
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid #e5eaf0;
+
+  border-radius: 12px;
+
+  padding: 0 18px;
+}
+
+.header {
+  min-height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  border-bottom: 1px solid #e7ebf0;
+}
+
+.header h2 {
+  margin: 0;
+
+  color: #062f67;
+
+  font-size: 21px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+}
+
+.seeAll {
+  color: #0067b8;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+.seeAll:hover {
+  text-decoration: underline;
+}
+
+.item {
+  display: flex;
+
+  gap: 18px;
+
+  padding: 15px 6px;
+
+  text-decoration: none;
+
+  color: inherit;
+
+  border-bottom: 1px solid #e5eaf0;
+
+  transition:
+    background-color 0.15s ease;
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.item:hover {
+  background-color: #f7faff;
+}
+
+.badgeArea {
+  width: 92px;
+
+  flex: 0 0 92px;
+
+  padding-top: 2px;
+}
+
+.badge {
+  display: inline-block;
+
+  min-width: 68px;
+
+  padding: 6px 10px;
+
+  text-align: center;
+
+  border-radius: 5px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+.badgeCritical {
+  background: #e5092f;
+
+  color: #ffffff;
+}
+
+.badgeInfo {
+  background: #1266c5;
+
+  color: #ffffff;
+}
+
+.badgeNotice {
+  background: #ffc400;
+
+  color: #08264c;
+}
+
+.badgeGeneral {
+  background: #78889a;
+
+  color: #ffffff;
+}
+
+.content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.itemTitle {
+  color: #0c3778;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  margin-bottom: 4px;
+}
+
+.description {
+  color: #66758a;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+
+  margin-bottom: 5px;
+
+  /*
+   * Prevent very long descriptions
+   * from taking over the homepage.
+   */
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 2;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.description p {
+  margin: 0;
+}
+
+.date {
+  color: #7c8999;
+
+  font-size: 12px;
+}
+
+.configure,
+.message {
+  padding: 25px;
+
+  color: #66758a;
+
+  text-align: center;
+}
+
+.error {
+  margin: 12px 0;
+
+  padding: 12px;
+
+  border-radius: 5px;
+
+  background: #fff1f1;
+
+  color: #b10e1e;
+}
+
+
+@media screen and (max-width: 600px) {
+
+  .wrapper {
+    padding: 0 12px;
+  }
+
+  .item {
+    gap: 10px;
+  }
+
+  .badgeArea {
+    width: 74px;
+
+    flex-basis: 74px;
+  }
+
+  .badge {
+    min-width: 58px;
+
+    padding: 5px 6px;
+
+    font-size: 9px;
+  }
+
+  .itemTitle {
+    font-size: 14px;
+  }
+
+  .description {
+    font-size: 12px;
+  }
+
+}

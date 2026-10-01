@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "suk-banner-slider-client-side-solution",
+    "id": "187db843-15f2-4ed1-86ee-b80857e400e1",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.23.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "suk-banner-slider description"
+      },
+      "longDescription": {
+        "default": "suk-banner-slider description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "suk-banner-slider Feature",
+        "description": "The feature that activates elements of the suk-banner-slider solution.",
+        "id": "022467f5-9c2b-41c0-b8d9-a1b19869a085",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/suk-banner-slider.sppkg"
+  }
+}

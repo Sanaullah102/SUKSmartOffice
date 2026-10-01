@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+
+  "bundles": {
+    "suk-banner-slider-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukBannerSlider/SukBannerSliderWebPart.js",
+          "manifest": "./src/webparts/sukBannerSlider/SukBannerSliderWebPart.manifest.json"
+        }
+      ]
+    },
+
+    "suk-announcements-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukAnnouncements/SukAnnouncementsWebPart.js",
+          "manifest": "./src/webparts/sukAnnouncements/SukAnnouncementsWebPart.manifest.json"
+        }
+      ]
+    },
+
+    "suk-custom-layout-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukCustomLayout/SukCustomLayoutWebPart.js",
+          "manifest": "./src/webparts/sukCustomLayout/SukCustomLayoutWebPart.manifest.json"
+        }
+      ]
+    },
+
+    "suk-birthday-slider-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukBirthdaySlider/SukBirthdaySliderWebPart.js",
+          "manifest": "./src/webparts/sukBirthdaySlider/SukBirthdaySliderWebPart.manifest.json"
+        }
+      ]
+    },"suk-quick-links-web-part": {
+  "components": [
+    {
+      "entrypoint": "./lib/webparts/sukQuickLinks/SukQuickLinksWebPart.js",
+      "manifest": "./src/webparts/sukQuickLinks/SukQuickLinksWebPart.manifest.json"
+    }
+  ]
+}
+  },
+
+  "externals": {},
+
+  "localizedResources": {
+    "SukBannerSliderWebPartStrings": "lib/webparts/sukBannerSlider/loc/{locale}.js",
+    "SukAnnouncementsWebPartStrings": "lib/webparts/sukAnnouncements/loc/{locale}.js",
+    "SukCustomLayoutWebPartStrings": "lib/webparts/sukCustomLayout/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+  }
+}

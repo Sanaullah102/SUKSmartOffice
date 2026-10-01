@@ -1,0 +1,66 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "2d39ce3f-4129-4f60-b5c6-6895d60839af",
+  "alias": "SukQuickLinksWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "supportsFullBleed": true,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+  "preconfiguredEntries": [
+    {
+      "groupId": "cf066440-0614-43d6-98ae-0b31cf14c7c3",
+      "group": {
+        "default": "SUK Smart Office"
+      },
+      "title": {
+        "default": "SUK Quick Links",
+        "ms-my": "SUK Akses Pantas"
+      },
+      "description": {
+        "default": "Simple dynamic Quick Links managed directly from the web part.",
+        "ms-my": "Akses Pantas dinamik yang diurus terus dari web part."
+      },
+      "officeFabricIconFontName": "Link",
+      "properties": {
+        "itemsJson": "[]",
+
+        "sectionTitle": "Akses Pantas",
+        "showSectionTitle": true,
+        "sectionBackgroundColor": "#ffffff",
+        "sectionPadding": 20,
+
+        "desktopColumns": 4,
+        "tabletColumns": 3,
+        "mobileColumns": 2,
+        "gap": 12,
+
+        "cardMinHeight": 128,
+        "cardPadding": 16,
+        "cardBackgroundColor": "#ffffff",
+        "cardBorderColor": "#e5e9f0",
+        "cardBorderWidth": 1,
+        "cardBorderRadius": 8,
+        "cardShadow": true,
+
+        "iconSize": 42,
+        "iconBoxSize": 52,
+        "imageFit": "contain",
+
+        "textSize": 15,
+        "textColor": "#08245c",
+        "textWeight": 600,
+        "textAlign": "center",
+
+        "hoverEffect": "lift",
+        "hoverBackgroundColor": "#f7faff",
+        "hoverBorderColor": "#b8c9e8",
+        "hoverScalePercent": 103,
+        "hoverShadow": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,516 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+
+  font-family:
+    "Segoe UI",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  align-items: stretch;
+
+  transition:
+    transform 350ms ease;
+}
+
+.cardSlot {
+  flex: 0 0 auto;
+  min-width: 0;
+
+  padding: 4px;
+
+  box-sizing: border-box;
+}
+
+.card {
+  height: 100%;
+  box-sizing: border-box;
+
+  background:
+    var(
+      --suk-birthday-card-bg,
+      #ffffff
+    );
+
+  border:
+    1px solid #e5e9f0;
+
+  border-radius:
+    var(
+      --suk-birthday-radius,
+      8px
+    );
+
+  box-shadow:
+    0 2px 10px
+    rgba(
+      20,
+      47,
+      82,
+      0.08
+    );
+
+  color: #1f2937;
+}
+
+.personName {
+  color:
+    var(
+      --suk-birthday-heading,
+      #08245c
+    );
+
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.jobTitle {
+  margin-top: 2px;
+
+  color: #39465a;
+
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.department {
+  margin-top: 2px;
+
+  color: #6a7484;
+
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.photo,
+.photoFallback {
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  border:
+    1px solid #dce3ed;
+
+  box-sizing: border-box;
+}
+
+.photo {
+  display: block;
+  object-fit: cover;
+  background: #eef2f7;
+}
+
+.photoFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    #eef3fa;
+
+  color:
+    var(
+      --suk-birthday-accent,
+      #0f4c9a
+    );
+
+  font-weight: 700;
+}
+
+.photoSmall {
+  width: 62px;
+  height: 62px;
+
+  font-size: 17px;
+}
+
+.photoMedium {
+  width: 72px;
+  height: 72px;
+
+  font-size: 19px;
+}
+
+.photoLarge {
+  width: 90px;
+  height: 90px;
+
+  font-size: 22px;
+}
+
+.dateRow,
+.dateRowStrong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-top: 5px;
+
+  color: #5f6877;
+
+  font-size: 12px;
+}
+
+.dateRowStrong {
+  color:
+    var(
+      --suk-birthday-heading,
+      #08245c
+    );
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.dateGlyph {
+  color:
+    var(
+      --suk-birthday-accent,
+      #0f4c9a
+    );
+
+  font-size: 11px;
+}
+
+/* ---------------------------------------------------------
+   STYLE 1: Compact portal announcement
+--------------------------------------------------------- */
+
+.compactCard {
+  min-height: 145px;
+
+  padding:
+    14px 16px;
+}
+
+.compactHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 11px;
+}
+
+.compactHeader h3 {
+  margin: 0;
+
+  color:
+    var(
+      --suk-birthday-heading,
+      #08245c
+    );
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.headerIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 26px;
+  height: 26px;
+
+  color:
+    var(
+      --suk-birthday-accent,
+      #0f4c9a
+    );
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.compactBody {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.compactInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.messageCompact {
+  margin-top: 6px;
+
+  color: #566174;
+
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+/* ---------------------------------------------------------
+   STYLE 2: Classic birthday card
+--------------------------------------------------------- */
+
+.classicCard {
+  min-height: 220px;
+
+  padding:
+    18px 20px;
+}
+
+.classicHeading {
+  margin:
+    0 0 18px 0;
+
+  color:
+    var(
+      --suk-birthday-heading,
+      #08245c
+    );
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.classicPersonRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.classicInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.messageClassic {
+  margin-top: 18px;
+
+  color: #556174;
+
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* ---------------------------------------------------------
+   STYLE 3: Welcome / vertical accent
+--------------------------------------------------------- */
+
+.welcomeCard {
+  min-height: 185px;
+
+  padding:
+    14px 16px;
+}
+
+.welcomeHeader {
+  margin-bottom: 12px;
+
+  color:
+    var(
+      --suk-birthday-heading,
+      #08245c
+    );
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.welcomeBody {
+  display: grid;
+
+  grid-template-columns:
+    auto 4px minmax(0, 1fr);
+
+  gap: 12px;
+
+  align-items: start;
+}
+
+.verticalAccent {
+  width: 4px;
+  min-height: 88px;
+
+  border-radius: 3px;
+
+  background:
+    var(
+      --suk-birthday-accent,
+      #0f4c9a
+    );
+}
+
+.welcomeInfo {
+  min-width: 0;
+}
+
+.messageWelcome {
+  margin-top: 7px;
+
+  color: #556174;
+
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* ---------------------------------------------------------
+   Slider navigation
+--------------------------------------------------------- */
+
+.arrow {
+  position: absolute;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  z-index: 5;
+
+  width: 34px;
+  height: 34px;
+
+  border:
+    1px solid #dce3ec;
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    );
+
+  color:
+    var(
+      --suk-birthday-accent,
+      #0f4c9a
+    );
+
+  box-shadow:
+    0 2px 8px
+    rgba(
+      20,
+      47,
+      82,
+      0.12
+    );
+
+  cursor: pointer;
+
+  font-size: 22px;
+  line-height: 1;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+
+  margin-top: 9px;
+}
+
+.dot,
+.activeDot {
+  width: 7px;
+  height: 7px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.dot {
+  background: #c7d1df;
+}
+
+.activeDot {
+  background:
+    var(
+      --suk-birthday-accent,
+      #0f4c9a
+    );
+}
+
+.stateMessage,
+.empty,
+.error {
+  min-height: 130px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  border:
+    1px dashed #d5dce6;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #677286;
+  text-align: center;
+}
+
+.error {
+  color: #a4262c;
+
+  border-color:
+    #efc3c5;
+
+  background:
+    #fff8f8;
+}
+
+@media (
+  max-width: 640px
+) {
+  .classicPersonRow,
+  .compactBody {
+    align-items: center;
+  }
+
+  .classicCard {
+    min-height: 200px;
+  }
+
+  .classicHeading {
+    font-size: 19px;
+  }
+
+  .welcomeBody {
+    grid-template-columns:
+      auto 4px minmax(0, 1fr);
+  }
+
+  .arrow {
+    width: 30px;
+    height: 30px;
+  }
+}
