@@ -335,11 +335,16 @@ React.FC<ISukBirthdaySliderProps> = ({
           className={`${styles.photo} ${sizeClass}`}
           src={person.photoUrl}
           alt={person.displayName}
-          onError={() =>
-            markPhotoFailed(
-              person.id
-            )
-          }
+          onError={(event) => {
+            console.warn(
+              '[SUK Birthday Slider] Profile image request failed.',
+              {
+                itemId: person.id,
+                imageUrl: event.currentTarget.currentSrc || person.photoUrl
+              }
+            );
+            markPhotoFailed(person.id);
+          }}
         />
       );
     }
@@ -419,7 +424,7 @@ React.FC<ISukBirthdaySliderProps> = ({
               )}
 
             {showBirthdayDate &&
-              person.birthdayLabel && (
+              (person.dateLabel || person.birthdayLabel) && (
                 <div className={styles.dateRow}>
                   <span
                     className={styles.dateGlyph}
@@ -428,7 +433,7 @@ React.FC<ISukBirthdaySliderProps> = ({
                     ▣
                   </span>
 
-                  {person.birthdayLabel}
+                  {person.dateLabel || person.birthdayLabel}
                 </div>
               )}
 
@@ -478,7 +483,7 @@ React.FC<ISukBirthdaySliderProps> = ({
               )}
 
             {showBirthdayDate &&
-              person.birthdayLabel && (
+              (person.dateLabel || person.birthdayLabel) && (
                 <div className={styles.dateRowStrong}>
                   <span
                     className={styles.dateGlyph}
@@ -487,7 +492,7 @@ React.FC<ISukBirthdaySliderProps> = ({
                     ▣
                   </span>
 
-                  {person.birthdayLabel}
+                  {person.dateLabel || person.birthdayLabel}
                 </div>
               )}
 
@@ -553,7 +558,7 @@ React.FC<ISukBirthdaySliderProps> = ({
               )}
 
             {showBirthdayDate &&
-              person.birthdayLabel && (
+              (person.dateLabel || person.birthdayLabel) && (
                 <div className={styles.dateRow}>
                   <span
                     className={styles.dateGlyph}
@@ -562,7 +567,7 @@ React.FC<ISukBirthdaySliderProps> = ({
                     ▣
                   </span>
 
-                  {person.birthdayLabel}
+                  {person.dateLabel || person.birthdayLabel}
                 </div>
               )}
 

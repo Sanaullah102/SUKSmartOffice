@@ -34,11 +34,16 @@ import {
   IBirthdaySourceOption,
   ISharePointFieldOption
 } from './services/BirthdayListService';
+import {
+  applyWebPartAppearance,
+  createWebPartAppearancePropertyPaneGroup,
+  IWebPartAppearanceSettings
+} from '../../styles/webPartAppearance';
 
 const NONE_FIELD =
   '__none__';
 
-export interface ISukBirthdaySliderWebPartProps {
+export interface ISukBirthdaySliderWebPartProps extends IWebPartAppearanceSettings {
   sourceList: string;
 
   mapNameField?: string;
@@ -49,7 +54,6 @@ export interface ISukBirthdaySliderWebPartProps {
   mapMessageField?: string;
   mapIsActiveField?: string;
   mapDisplayOrderField?: string;
-
   birthdayRange:
     BirthdayRange;
 
@@ -128,7 +132,7 @@ extends BaseClientSideWebPart<
 
   private _fieldStatus:
     string =
-      'Name and Birthday are required. Other mappings are optional.';
+      'Map the fields required by the selected display mode.';
 
   private _renderRequestId:
     number =
@@ -236,6 +240,8 @@ extends BaseClientSideWebPart<
       string
   ): void {
 
+    applyWebPartAppearance(this.domElement, this.properties);
+
     const element:
       React.ReactElement<
         ISukBirthdaySliderProps
@@ -244,7 +250,6 @@ extends BaseClientSideWebPart<
         SukBirthdaySlider,
         {
           people,
-
           loading,
 
           errorMessage,
@@ -253,12 +258,8 @@ extends BaseClientSideWebPart<
             this.properties
               .styleVariant,
 
-          heading:
-            this.properties.heading,
-
-          emptyMessage:
-            this.properties
-              .emptyMessage,
+          heading: this.properties.heading,
+          emptyMessage: this.properties.emptyMessage,
 
           autoplay:
             this.properties
@@ -332,8 +333,7 @@ extends BaseClientSideWebPart<
       );
   }
 
-  protected
-  onPropertyPaneConfigurationStart():
+  protected onPropertyPaneConfigurationStart():
     void {
 
     void this._preparePropertyPane();
@@ -364,8 +364,7 @@ extends BaseClientSideWebPart<
     }
   }
 
-  protected
-  onPropertyPaneFieldChanged(
+  protected onPropertyPaneFieldChanged(
     propertyPath:
       string,
 
@@ -502,7 +501,7 @@ extends BaseClientSideWebPart<
           );
 
       this._fieldStatus =
-        `${this._sourceFields.length} fields found. Name and Birthday are required.`;
+        `${this._sourceFields.length} fields found. Name is required; map fields for the selected display mode.`;
 
       if (
         autoMap
@@ -596,7 +595,8 @@ extends BaseClientSideWebPart<
         clean(
           this.properties
             .mapDisplayOrderField
-        )
+        ),
+
     };
   }
 
@@ -634,6 +634,7 @@ extends BaseClientSideWebPart<
     this.properties
       .mapDisplayOrderField =
       undefined;
+
   }
 
   private _autoMapFields():
@@ -748,6 +749,7 @@ extends BaseClientSideWebPart<
           'SortOrder'
         ]
       );
+
   }
 
   private _findField(
@@ -1004,8 +1006,7 @@ extends BaseClientSideWebPart<
     }
   }
 
-  public
-  getPropertyPaneConfiguration():
+  public getPropertyPaneConfiguration():
     IPropertyPaneConfiguration {
 
     const textFields =
@@ -1054,10 +1055,12 @@ extends BaseClientSideWebPart<
         {
           header: {
             description:
-              'Read-only birthday slider using a SharePoint List. No Entra ID lookup and no profile link.'
+              'Show upcoming birthdays from a SharePoint list. Map an image or thumbnail field to display profile pictures.'
           },
 
           groups: [
+            createWebPartAppearancePropertyPaneGroup(this.properties),
+
             {
               groupName:
                 '1. SharePoint List',
@@ -1067,7 +1070,7 @@ extends BaseClientSideWebPart<
                   'sourceList',
                   {
                     label:
-                      'Birthday List',
+                      'People List',
 
                     options:
                       this._listOptions,
@@ -1212,7 +1215,7 @@ extends BaseClientSideWebPart<
                   'mapBirthdayField',
                   {
                     label:
-                      'Birthday Date Field (Required)',
+                      'Birthday Date Field (Required for Birthdays)',
 
                     options:
                       dateFields
@@ -1223,10 +1226,9 @@ extends BaseClientSideWebPart<
                   'mapPhotoField',
                   {
                     label:
-                      'Photo / Image Field',
+                      'Photo / Thumbnail Image Field',
 
-                    options:
-                      photoFields
+                    options: photoFields
                   }
                 ),
 

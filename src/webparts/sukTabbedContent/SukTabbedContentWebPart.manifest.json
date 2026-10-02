@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "f5c5f461-5c43-42ba-ae22-d7348c2e5d76",
+  "alias": "SukTabbedContentWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "supportsFullBleed": false,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+  "preconfiguredEntries": [
+    {
+      "groupId": "cf066440-0614-43d6-98ae-0b31cf14c7c3",
+      "group": {
+        "default": "SUK Smart Office"
+      },
+      "title": {
+        "default": "SUK Tabs"
+      },
+      "description": {
+        "default": "Show document links, filtered library files, or configured SUK content in responsive tabs."
+      },
+      "officeFabricIconFontName": "Tabs",
+      "properties": {
+        "tabsJson": "[]",
+        "heading": "Dokumen Rujukan",
+        "seeAllText": "Lihat semua",
+        "appearanceMode": "theme",
+        "appearanceBorderWidth": 1,
+        "appearanceBorderColor": "#e5eaf0",
+        "appearanceBorderRadius": 10
+      }
+    }
+  ]
+}

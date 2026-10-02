@@ -1,16 +1,14 @@
-.quickLinks {
-  width: 100%;
-  box-sizing: border-box;
-  background: var(--suk-section-bg, #ffffff);
-  padding: var(--suk-section-padding, 20px);
+@use '../../../styles/sukShared' as shared;
 
-  font-family:
-    "Segoe UI",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
+.quickLinks {
+  @include shared.web-part-root;
+  @include shared.appearance-border;
+  container-type: inline-size;
+  background: var(
+    --suk-appearance-background-color,
+    var(--suk-section-bg, var(--white, #ffffff))
+  );
+  padding: var(--suk-section-padding, #{shared.$section-padding});
 }
 
 .headerRow {
@@ -23,14 +21,39 @@
 
 .headerActions {
   display: flex;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
 
+.seeAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #1556c0;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.seeAllArrow {
+  font-size: 15px;
+  line-height: 1;
+}
+
 .sectionTitle {
   margin: 0;
-  color: #08245c;
+  color: var(
+    --suk-appearance-heading-color,
+    var(--themePrimary, #{shared.$heading-color})
+  );
   font-size: 22px;
   font-weight: 700;
   line-height: 1.25;
@@ -182,6 +205,209 @@
   gap: var(--suk-gap, 12px);
 }
 
+.tiles {
+  align-items: stretch;
+}
+
+.iconStrip {
+  grid-template-columns:
+    repeat(
+      var(--suk-columns-desktop, 4),
+      minmax(0, 1fr)
+    );
+
+  .card {
+    min-height: 86px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-color: transparent;
+    text-align: left;
+  }
+
+  .serviceGrid {
+    grid-template-columns:
+      repeat(var(--suk-columns-desktop, 4), minmax(0, 1fr));
+
+    .card {
+      min-height: var(--suk-card-min-height, 84px);
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 14px 15px;
+      background: #fff;
+      text-align: left;
+    }
+
+    .iconBox {
+      width: var(--suk-icon-box-size, 44px);
+      height: var(--suk-icon-box-size, 44px);
+      flex: 0 0 var(--suk-icon-box-size, 44px);
+      margin: 0;
+    }
+
+    .iconContain,
+    .iconCover {
+      width: var(--suk-icon-size, 38px);
+      height: var(--suk-icon-size, 38px);
+    }
+
+    .iconFallback {
+      color: #183fb4;
+      font-size: 34px;
+    }
+
+    .cardText {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .cardTitle {
+      text-align: left;
+    }
+  }
+
+  .iconBox {
+    width: var(--suk-icon-box-size, 52px);
+    height: var(--suk-icon-box-size, 52px);
+    flex: 0 0 var(--suk-icon-box-size, 52px);
+    margin: 0;
+  }
+
+  .cardTitle {
+    text-align: left;
+  }
+}
+
+.list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+
+  .card {
+    min-height: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 12px 10px;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    text-align: left;
+  }
+
+  .iconBox {
+    width: var(--suk-icon-box-size, 42px);
+    height: var(--suk-icon-box-size, 42px);
+    flex: 0 0 var(--suk-icon-box-size, 42px);
+    margin: 0;
+  }
+
+  .cardTitle {
+    text-align: left;
+  }
+
+  .cardWrapper:last-child .card {
+    border-bottom-width: 0;
+  }
+}
+
+.pills {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 175px), max-content)
+  );
+  align-items: center;
+
+  .card {
+    min-height: 46px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+
+  .iconBox {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    margin: 0;
+  }
+
+  .iconContain,
+  .iconCover {
+    width: 26px;
+    height: 26px;
+  }
+
+  .iconFallback {
+    font-size: 21px;
+  }
+
+  .cardTitle {
+    width: auto;
+    text-align: left;
+  }
+}
+
+.compact {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 145px), 1fr)
+  );
+
+  .card {
+    min-height: 76px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 10px 12px;
+  }
+
+  .iconBox {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    margin: 0;
+  }
+
+  .iconContain,
+  .iconCover {
+    width: min(var(--suk-icon-size, 32px), 38px);
+    height: min(var(--suk-icon-size, 32px), 38px);
+  }
+
+  .iconFallback {
+    font-size: 24px;
+  }
+
+  .cardTitle {
+    text-align: left;
+  }
+}
+
+.iconLeft {
+  .card {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .iconBox {
+    margin: 0;
+  }
+
+  .cardTitle {
+    text-align: left;
+  }
+}
+
+.noLinkBorder {
+  .card {
+    border-color: transparent;
+  }
+}
+
 .cardWrapper {
   min-width: 0;
   border-radius: var(--suk-card-radius, 8px);
@@ -308,6 +534,35 @@
   overflow-wrap: anywhere;
 }
 
+.cardText {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.cardDescription {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: var(--suk-text-align, center);
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+}
+
+.serviceGrid .cardDescription,
+.list .cardDescription,
+.compact .cardDescription,
+.iconStrip .cardDescription {
+  text-align: left;
+}
+
 .itemToolbar {
   display: flex;
   flex-wrap: wrap;
@@ -359,6 +614,48 @@
         var(--suk-columns-tablet, 3),
         minmax(0, 1fr)
       );
+  }
+}
+
+@container (max-width: 760px) {
+  .iconStrip,
+  .serviceGrid,
+  .tiles {
+    grid-template-columns:
+      repeat(var(--suk-columns-tablet, 3), minmax(0, 1fr));
+  }
+}
+
+@container (max-width: 520px) {
+  .iconStrip,
+  .serviceGrid,
+  .tiles {
+    grid-template-columns:
+      repeat(var(--suk-columns-mobile, 2), minmax(0, 1fr));
+  }
+
+  .iconStrip .card {
+    min-height: 72px;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .serviceGrid .card {
+    min-height: 68px;
+    gap: 8px;
+    padding: 9px;
+  }
+
+  .serviceGrid .iconBox {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .serviceGrid .iconContain,
+  .serviceGrid .iconCover {
+    width: min(var(--suk-icon-size, 32px), 36px);
+    height: min(var(--suk-icon-size, 32px), 36px);
   }
 }
 

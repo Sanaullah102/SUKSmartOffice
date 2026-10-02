@@ -713,9 +713,10 @@ React.FC<ISukCustomLayoutProps> = ({
     padding: `${outerPadding}px`,
 
     borderRadius:
-      `${borderRadius}px`,
+      `var(--suk-appearance-border-radius, ${borderRadius}px)`,
 
-    backgroundColor,
+    backgroundColor:
+      `var(--suk-appearance-background-color, ${backgroundColor})`,
 
     minHeight:
       `${minHeight}px`,

@@ -3,6 +3,7 @@ import styles from './SukQuickLinks.module.scss';
 
 import {
   IQuickLinkItem,
+  QuickLinksDisplayStyle,
   ISukQuickLinksProps
 } from './ISukQuickLinksProps';
 
@@ -30,6 +31,7 @@ const makeEmptyItem = (
 ): IQuickLinkItem => ({
   id: '',
   text: '',
+  description: '',
   iconUrl: '',
   linkUrl: '',
   openInNewTab: false,
@@ -42,9 +44,13 @@ const makeEmptyItem = (
 const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
   items,
   isEditMode,
+  displayStyle,
 
   sectionTitle,
   showSectionTitle,
+  showSeeAll,
+  seeAllText,
+  seeAllUrl,
   sectionBackgroundColor,
   sectionPadding,
 
@@ -52,6 +58,8 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
   tabletColumns,
   mobileColumns,
   gap,
+  iconPosition,
+  showLinkBorder,
 
   cardMinHeight,
   cardPadding,
@@ -129,6 +137,14 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
           : hoverEffect === 'none'
             ? styles.hoverNone
             : styles.hoverLift;
+  const styleClass: { [key in QuickLinksDisplayStyle]: string } = {
+    tiles: styles.tiles,
+    iconStrip: styles.iconStrip,
+    serviceGrid: styles.serviceGrid,
+    list: styles.list,
+    pills: styles.pills,
+    compact: styles.compact
+  };
 
   const startAdd = (): void => {
     setEditor({
@@ -148,6 +164,7 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
       item: {
         id: item.id,
         text: item.text,
+        description: item.description || '',
         iconUrl: item.iconUrl,
         linkUrl: item.linkUrl,
         openInNewTab: item.openInNewTab,
@@ -178,6 +195,7 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
     const nextItem: IQuickLinkItem = {
       id: editor.item.id,
       text: editor.item.text,
+      description: editor.item.description,
       iconUrl: editor.item.iconUrl,
       linkUrl: editor.item.linkUrl,
       openInNewTab: editor.item.openInNewTab,
@@ -223,6 +241,7 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
           ? createId()
           : editor.item.id,
       text: textValue,
+      description: (editor.item.description || '').trim(),
       iconUrl: editor.item.iconUrl.trim(),
       linkUrl: linkValue,
       openInNewTab: editor.item.openInNewTab === true,
@@ -281,6 +300,7 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
     const copiedItem: IQuickLinkItem = {
       id: createId(),
       text: `${item.text} - Copy`,
+      description: item.description || '',
       iconUrl: item.iconUrl,
       linkUrl: item.linkUrl,
       openInNewTab: item.openInNewTab,
@@ -423,8 +443,19 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
           </h2>
         )}
 
-        {isEditMode && (
+        {(isEditMode || (showSeeAll && !!seeAllUrl)) && (
           <div className={styles.headerActions}>
+            {showSeeAll && !!seeAllUrl && (
+              <a
+                className={styles.seeAll}
+                href={seeAllUrl}
+              >
+                {seeAllText || 'Lihat semua perkhidmatan'}
+                <span className={styles.seeAllArrow} aria-hidden="true">→</span>
+              </a>
+            )}
+
+            {isEditMode && <>
             <button
               type="button"
               className={styles.secondaryButton}
@@ -440,6 +471,7 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
             >
               + Add New Link
             </button>
+            </>}
           </div>
         )}
       </div>
@@ -531,6 +563,21 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
                   )
                 }
                 placeholder="Example: HRMIS"
+              />
+            </label>
+
+            <label className={styles.field}>
+              <span>Description (optional)</span>
+              <input
+                type="text"
+                value={editor.item.description || ''}
+                onChange={(event) =>
+                  updateEditorField(
+                    'description',
+                    event.currentTarget.value
+                  )
+                }
+                placeholder="Example: Access systems online"
               />
             </label>
 
@@ -698,7 +745,11 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
             : 'No quick links configured.'}
         </div>
       ) : (
-        <div className={styles.grid}>
+        <div
+          className={`${styles.grid} ${styleClass[displayStyle] || styles.tiles} ${
+            iconPosition === 'left' ? styles.iconLeft : ''
+          } ${showLinkBorder ? '' : styles.noLinkBorder}`}
+        >
           {items.map(
             (
               item: IQuickLinkItem,
@@ -708,7 +759,16 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
               const effectiveBackgroundColor =
                 item.overrideBackgroundColor
                   ? item.backgroundColor
-                  : cardBackgroundColor;
+                  : displayStyle === 'iconStrip'
+                    ? [
+                      '#e4f2ff',
+                      '#ffebf0',
+                      '#e0f7f2',
+                      '#fff1e3',
+                      '#f3e8ff',
+                      '#e7efff'
+                    ][index % 6]
+                    : cardBackgroundColor;
 
               const effectiveTextColor =
                 item.overrideTextColor
@@ -789,8 +849,13 @@ const SukQuickLinks: React.FC<ISukQuickLinksProps> = ({
                       )}
                     </div>
 
-                    <span className={styles.cardTitle}>
-                      {item.text}
+                    <span className={styles.cardText}>
+                      <span className={styles.cardTitle}>
+                        {item.text}
+                      </span>
+                      {item.description && <span className={styles.cardDescription}>
+                        {item.description}
+                      </span>}
                     </span>
                   </a>
 

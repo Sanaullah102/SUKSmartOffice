@@ -1,0 +1,395 @@
+@use '../../../styles/sukShared' as shared;
+
+.news {
+  @include shared.web-part-root;
+  @include shared.section-surface;
+  @include shared.section-padding;
+  container-type: inline-size;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.title {
+  @include shared.section-heading;
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.25;
+}
+
+.seeAll {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  color: #145bc1;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.seeAll:hover,
+.seeAll:focus-visible {
+  text-decoration: underline;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e6ebf2;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 1px 5px rgba(23, 43, 77, 0.06);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-2px);
+  border-color: #c5d2e2;
+  box-shadow: 0 6px 16px rgba(23, 43, 77, 0.12);
+  outline: none;
+}
+
+.imageFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e8eff8, #f5f7fa);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #315b96;
+  font-size: 32px;
+}
+
+.body {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 11px 12px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: #68758a;
+  font-size: 11px;
+}
+
+.category {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #315b96;
+  font-size: 9px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardTitle {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--suk-appearance-heading-color, #12295a);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #66758a;
+  font-size: 11px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.readMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 5px;
+  color: #155bc1;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.cardGrid {
+  display: block;
+}
+
+.splitCards {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .imageFrame {
+    border-radius: 7px;
+  }
+
+  .body {
+    padding: 8px 2px 2px;
+  }
+
+  .readMore {
+    padding-top: 2px;
+  }
+}
+
+.editorial {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    border-width: 0 1px 0 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .card:last-child {
+    border-right: 0;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .imageFrame {
+    aspect-ratio: 1.8 / 1;
+    border-radius: 5px;
+  }
+
+  .body {
+    padding: 8px 10px 5px 0;
+  }
+
+  .readMore {
+    padding-top: 2px;
+  }
+}
+
+.featured {
+  .grid {
+    grid-template-columns: minmax(0, 1.7fr) minmax(180px, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .card:first-child {
+    grid-row: span 2;
+  }
+
+  .card:first-child .imageFrame {
+    flex: 1 1 auto;
+    min-height: 180px;
+    aspect-ratio: auto;
+  }
+
+  .card:not(:first-child) {
+    flex-direction: row;
+    align-items: center;
+    box-shadow: none;
+  }
+
+  .card:not(:first-child) .imageFrame {
+    width: 38%;
+    flex: 0 0 38%;
+    aspect-ratio: 1 / 1;
+  }
+
+  .card:not(:first-child) .body {
+    padding: 8px;
+  }
+
+  .card:not(:first-child) .description,
+  .card:not(:first-child) .readMore {
+    display: none;
+  }
+}
+
+.compact {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .card {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .card:last-child {
+    border-bottom: 0;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .imageFrame {
+    width: 140px;
+    flex: 0 0 140px;
+    aspect-ratio: 16 / 9;
+    border-radius: 5px;
+  }
+
+  .body {
+    padding: 4px 0;
+  }
+
+  .description {
+    -webkit-line-clamp: 2;
+  }
+}
+
+.status {
+  display: grid;
+  min-height: 100px;
+  padding: 16px;
+  place-items: center;
+  color: #66758a;
+  font-size: 13px;
+  text-align: center;
+}
+
+.error {
+  color: #a4262c;
+}
+
+@container (max-width: 700px) {
+  .grid,
+  .splitCards .grid,
+  .editorial .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featured .grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(150px, 1fr);
+  }
+}
+
+@container (max-width: 480px) {
+  .header {
+    align-items: flex-start;
+  }
+
+  .grid,
+  .splitCards .grid,
+  .editorial .grid,
+  .featured .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .featured .card:first-child {
+    grid-row: auto;
+  }
+
+  .featured .card:first-child .imageFrame {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
+  .featured .card:not(:first-child) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .featured .card:not(:first-child) .imageFrame {
+    width: 100%;
+    flex-basis: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .featured .card:not(:first-child) .description,
+  .featured .card:not(:first-child) .readMore {
+    display: inline-flex;
+  }
+
+  .editorial .card {
+    border-width: 0 0 1px;
+  }
+
+  .compact .imageFrame {
+    width: 104px;
+    flex-basis: 104px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

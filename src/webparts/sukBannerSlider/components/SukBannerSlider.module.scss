@@ -1,8 +1,14 @@
+@use '../../../styles/sukShared' as shared;
+
 .slider {
   position: relative;
-  width: 100%;
+  @include shared.web-part-root;
+  @include shared.appearance-border;
   overflow: hidden;
-  background: #f3f2f1;
+  background: var(
+    --suk-appearance-background-color,
+    var(--neutralLighter, #f3f2f1)
+  );
 }
 
 .slide {

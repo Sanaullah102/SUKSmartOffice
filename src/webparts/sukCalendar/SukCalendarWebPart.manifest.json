@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "b2eb8dcb-4163-47c8-8cc8-89209b85ed2e",
+  "alias": "SukCalendarWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "supportsFullBleed": true,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+  "preconfiguredEntries": [
+    {
+      "groupId": "cf066440-0614-43d6-98ae-0b31cf14c7c3",
+      "group": {
+        "default": "SUK Smart Office"
+      },
+      "title": {
+        "default": "SUK Calendar & Activities",
+        "ms-my": "Kalendar & Aktiviti SUK"
+      },
+      "description": {
+        "default": "Responsive calendar with a daily agenda from a SharePoint list or Outlook calendar.",
+        "ms-my": "Kalendar responsif dengan agenda harian daripada senarai SharePoint atau kalendar Outlook."
+      },
+      "officeFabricIconFontName": "Calendar",
+      "properties": {
+        "source": "sharePointList",
+        "title": "Kalender Aktiviti",
+        "weekStartsOn": 0
+      }
+    }
+  ]
+}

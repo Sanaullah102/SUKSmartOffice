@@ -37,14 +37,63 @@
           "manifest": "./src/webparts/sukBirthdaySlider/SukBirthdaySliderWebPart.manifest.json"
         }
       ]
-    },"suk-quick-links-web-part": {
-  "components": [
-    {
-      "entrypoint": "./lib/webparts/sukQuickLinks/SukQuickLinksWebPart.js",
-      "manifest": "./src/webparts/sukQuickLinks/SukQuickLinksWebPart.manifest.json"
+    },
+    "suk-quick-links-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukQuickLinks/SukQuickLinksWebPart.js",
+          "manifest": "./src/webparts/sukQuickLinks/SukQuickLinksWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-gallery-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukGallery/SukGalleryWebPart.js",
+          "manifest": "./src/webparts/sukGallery/SukGalleryWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-calendar-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukCalendar/SukCalendarWebPart.js",
+          "manifest": "./src/webparts/sukCalendar/SukCalendarWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-welcome-user-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukWelcomeUser/SukWelcomeUserWebPart.js",
+          "manifest": "./src/webparts/sukWelcomeUser/SukWelcomeUserWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-tabbed-content-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukTabbedContent/SukTabbedContentWebPart.js",
+          "manifest": "./src/webparts/sukTabbedContent/SukTabbedContentWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-activity-display-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukActivityDisplay/SukActivityDisplayWebPart.js",
+          "manifest": "./src/webparts/sukActivityDisplay/SukActivityDisplayWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-news-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukNews/SukNewsWebPart.js",
+          "manifest": "./src/webparts/sukNews/SukNewsWebPart.manifest.json"
+        }
+      ]
     }
-  ]
-}
   },
 
   "externals": {},

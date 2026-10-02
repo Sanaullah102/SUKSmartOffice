@@ -23,9 +23,14 @@ import {
   ISukCustomLayoutProps,
   SukModuleType
 } from './components/ISukCustomLayoutProps';
+import {
+  applyWebPartAppearance,
+  createWebPartAppearancePropertyPaneGroup,
+  IWebPartAppearanceSettings
+} from '../../styles/webPartAppearance';
 
 
-export interface ISukCustomLayoutWebPartProps {
+export interface ISukCustomLayoutWebPartProps extends IWebPartAppearanceSettings {
 
   columnCount: number;
 
@@ -253,6 +258,7 @@ export default class SukCustomLayoutWebPart
 
 
   public render(): void {
+    applyWebPartAppearance(this.domElement, this.properties);
 
     const column1:
       ISukColumnConfig = {
@@ -533,7 +539,7 @@ export default class SukCustomLayoutWebPart
 
 
           groups: [
-
+            createWebPartAppearancePropertyPaneGroup(this.properties),
 
             /*
              * ==================================

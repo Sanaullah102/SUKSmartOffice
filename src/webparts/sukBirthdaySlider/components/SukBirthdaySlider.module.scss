@@ -1,15 +1,10 @@
+@use '../../../styles/sukShared' as shared;
+
 .wrapper {
   position: relative;
-  width: 100%;
-  box-sizing: border-box;
-
-  font-family:
-    "Segoe UI",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
+  @include shared.web-part-root;
+  @include shared.section-surface;
+  @include shared.section-padding;
 }
 
 .viewport {
@@ -62,14 +57,14 @@
       0.08
     );
 
-  color: #1f2937;
+  color: var(--suk-appearance-text-color, #{shared.$text-color});
 }
 
 .personName {
   color:
     var(
-      --suk-birthday-heading,
-      #08245c
+      --suk-appearance-heading-color,
+      var(--suk-birthday-heading, #08245c)
     );
 
   font-size: 15px;
@@ -80,7 +75,7 @@
 .jobTitle {
   margin-top: 2px;
 
-  color: #39465a;
+  color: var(--suk-appearance-text-color, #39465a);
 
   font-size: 13px;
   line-height: 1.25;
@@ -89,7 +84,7 @@
 .department {
   margin-top: 2px;
 
-  color: #6a7484;
+  color: var(--suk-appearance-text-color, #6a7484);
 
   font-size: 12px;
   line-height: 1.25;

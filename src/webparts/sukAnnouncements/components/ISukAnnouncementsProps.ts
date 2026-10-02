@@ -1,5 +1,12 @@
 import { SPHttpClient } from '@microsoft/sp-http';
 
+export type AnnouncementDisplayStyle =
+  | 'referenceCards'
+  | 'classicRows'
+  | 'timeline'
+  | 'magazine'
+  | 'compactCards';
+
 export interface ISukAnnouncementItem {
   Id: number;
   title: string;
@@ -30,4 +37,6 @@ export interface ISukAnnouncementsProps {
   clickMode: 'view' | 'edit';
 
   showSeeAll: boolean;
+
+  displayStyle: AnnouncementDisplayStyle;
 }

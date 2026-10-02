@@ -24,8 +24,14 @@ import SukAnnouncements
   from './components/SukAnnouncements';
 
 import {
+  AnnouncementDisplayStyle,
   ISukAnnouncementsProps
 } from './components/ISukAnnouncementsProps';
+import {
+  applyWebPartAppearance,
+  createWebPartAppearancePropertyPaneGroup,
+  IWebPartAppearanceSettings
+} from '../../styles/webPartAppearance';
 
 
 interface IListField {
@@ -37,7 +43,7 @@ interface IListField {
 }
 
 
-export interface ISukAnnouncementsWebPartProps {
+export interface ISukAnnouncementsWebPartProps extends IWebPartAppearanceSettings {
 
   webPartTitle: string;
 
@@ -56,6 +62,8 @@ export interface ISukAnnouncementsWebPartProps {
   clickMode: 'view' | 'edit';
 
   showSeeAll: boolean;
+
+  displayStyle: AnnouncementDisplayStyle;
 
 }
 
@@ -104,6 +112,7 @@ export default class SukAnnouncementsWebPart
 
 
   public render(): void {
+    applyWebPartAppearance(this.domElement, this.properties);
 
     const element:
       React.ReactElement<ISukAnnouncementsProps> =
@@ -144,7 +153,10 @@ export default class SukAnnouncementsWebPart
             this.properties.clickMode || 'view',
 
           showSeeAll:
-            this.properties.showSeeAll !== false
+            this.properties.showSeeAll !== false,
+
+          displayStyle:
+            this.properties.displayStyle || 'referenceCards'
 
         }
       );
@@ -407,6 +419,7 @@ export default class SukAnnouncementsWebPart
           },
 
           groups: [
+            createWebPartAppearancePropertyPaneGroup(this.properties),
 
             {
 
@@ -462,6 +475,20 @@ export default class SukAnnouncementsWebPart
 
                     offText:
                       'No'
+                  }
+                ),
+
+                PropertyPaneDropdown(
+                  'displayStyle',
+                  {
+                    label: 'Announcement display style',
+                    options: [
+                      { key: 'referenceCards', text: 'Status cards (reference)' },
+                      { key: 'classicRows', text: 'Classic rows' },
+                      { key: 'timeline', text: 'Timeline' },
+                      { key: 'magazine', text: 'Magazine cards' },
+                      { key: 'compactCards', text: 'Compact cards' }
+                    ]
                   }
                 )
 

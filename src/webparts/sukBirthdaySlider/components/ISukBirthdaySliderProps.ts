@@ -18,6 +18,7 @@ export interface IBirthdayPerson {
   department?: string;
   birthday?: string;
   birthdayLabel?: string;
+  dateLabel?: string;
   daysUntil?: number;
   photoUrl?: string;
   message?: string;

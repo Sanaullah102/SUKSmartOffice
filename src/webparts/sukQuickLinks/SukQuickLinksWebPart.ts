@@ -23,15 +23,24 @@ import SukQuickLinks
 import {
   IQuickLinkItem,
   ISukQuickLinksProps,
+  QuickLinksDisplayStyle,
   QuickLinksHoverEffect,
   QuickLinksTextAlign
 } from './components/ISukQuickLinksProps';
+import {
+  applyWebPartAppearance,
+  createWebPartAppearancePropertyPaneGroup,
+  IWebPartAppearanceSettings
+} from '../../styles/webPartAppearance';
 
-export interface ISukQuickLinksWebPartProps {
+export interface ISukQuickLinksWebPartProps extends IWebPartAppearanceSettings {
   itemsJson: string;
 
   sectionTitle: string;
   showSectionTitle: boolean;
+  showSeeAll: boolean;
+  seeAllText: string;
+  seeAllUrl: string;
   sectionBackgroundColor: string;
   sectionPadding: number;
 
@@ -39,6 +48,9 @@ export interface ISukQuickLinksWebPartProps {
   tabletColumns: number;
   mobileColumns: number;
   gap: number;
+  displayStyle: QuickLinksDisplayStyle;
+  iconPosition: 'top' | 'left';
+  showLinkBorder: boolean;
 
   cardMinHeight: number;
   cardPadding: number;
@@ -73,6 +85,7 @@ export default class SukQuickLinksWebPart
   }
 
   public render(): void {
+    applyWebPartAppearance(this.domElement, this.properties);
 
     const element:
       React.ReactElement<ISukQuickLinksProps> =
@@ -84,11 +97,23 @@ export default class SukQuickLinksWebPart
           isEditMode:
             this.displayMode === DisplayMode.Edit,
 
+          displayStyle:
+            this.properties.displayStyle,
+
           sectionTitle:
             this.properties.sectionTitle,
 
           showSectionTitle:
             this.properties.showSectionTitle,
+
+          showSeeAll:
+            this.properties.showSeeAll,
+
+          seeAllText:
+            this.properties.seeAllText,
+
+          seeAllUrl:
+            this.properties.seeAllUrl,
 
           sectionBackgroundColor:
             this.properties.sectionBackgroundColor,
@@ -107,6 +132,12 @@ export default class SukQuickLinksWebPart
 
           gap:
             this.properties.gap,
+
+          iconPosition:
+            this.properties.iconPosition,
+
+          showLinkBorder:
+            this.properties.showLinkBorder,
 
           cardMinHeight:
             this.properties.cardMinHeight,
@@ -272,6 +303,11 @@ export default class SukQuickLinksWebPart
               text:
                 item.text || '',
 
+              description:
+                typeof item.description === 'string'
+                  ? item.description
+                  : '',
+
               iconUrl:
                 item.iconUrl || '',
 
@@ -315,6 +351,18 @@ export default class SukQuickLinksWebPart
       this.properties.showSectionTitle = true;
     }
 
+    if (this.properties.showSeeAll === undefined) {
+      this.properties.showSeeAll = false;
+    }
+
+    if (!this.properties.seeAllText) {
+      this.properties.seeAllText = 'Lihat semua perkhidmatan';
+    }
+
+    if (!this.properties.seeAllUrl) {
+      this.properties.seeAllUrl = '';
+    }
+
     if (!this.properties.sectionBackgroundColor) {
       this.properties.sectionBackgroundColor = '#ffffff';
     }
@@ -337,6 +385,18 @@ export default class SukQuickLinksWebPart
 
     if (this.properties.gap === undefined) {
       this.properties.gap = 12;
+    }
+
+    if (!this.properties.displayStyle) {
+      this.properties.displayStyle = 'tiles';
+    }
+
+    if (!this.properties.iconPosition) {
+      this.properties.iconPosition = 'top';
+    }
+
+    if (this.properties.showLinkBorder === undefined) {
+      this.properties.showLinkBorder = true;
     }
 
     if (!this.properties.cardMinHeight) {
@@ -427,6 +487,7 @@ export default class SukQuickLinksWebPart
           },
 
           groups: [
+            createWebPartAppearancePropertyPaneGroup(this.properties),
             {
               groupName: '1. Section',
 
@@ -444,6 +505,29 @@ export default class SukQuickLinksWebPart
                     label: 'Section Title',
                     disabled:
                       !this.properties.showSectionTitle
+                  }
+                ),
+
+                PropertyPaneToggle(
+                  'showSeeAll',
+                  {
+                    label: 'Show section “Lihat semua” link'
+                  }
+                ),
+
+                PropertyPaneTextField(
+                  'seeAllText',
+                  {
+                    label: 'See-all link text',
+                    disabled: !this.properties.showSeeAll
+                  }
+                ),
+
+                PropertyPaneTextField(
+                  'seeAllUrl',
+                  {
+                    label: 'See-all link URL',
+                    disabled: !this.properties.showSeeAll
                   }
                 ),
 
@@ -496,6 +580,38 @@ export default class SukQuickLinksWebPart
               groupName: '3. Responsive Grid',
 
               groupFields: [
+                PropertyPaneDropdown(
+                  'displayStyle',
+                  {
+                    label: 'Display style',
+                    options: [
+                      { key: 'tiles', text: 'Tiles (current)' },
+                      { key: 'iconStrip', text: 'Pastel icon strip' },
+                      { key: 'list', text: 'List rows' },
+                      { key: 'pills', text: 'Rounded pills' },
+                      { key: 'compact', text: 'Compact tiles' }
+                    ]
+                  }
+                ),
+
+                PropertyPaneDropdown(
+                  'iconPosition',
+                  {
+                    label: 'Icon position',
+                    options: [
+                      { key: 'top', text: 'Above text' },
+                      { key: 'left', text: 'Beside text' }
+                    ]
+                  }
+                ),
+
+                PropertyPaneToggle(
+                  'showLinkBorder',
+                  {
+                    label: 'Show link border'
+                  }
+                ),
+
                 PropertyPaneSlider(
                   'desktopColumns',
                   {

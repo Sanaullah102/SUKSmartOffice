@@ -1,0 +1,220 @@
+@import '../../../styles/sukShared';
+
+.tabs {
+  @include web-part-root;
+  color: var(--suk-appearance-text-color, var(--suk-text-color, #323130));
+  font-family: var(--suk-appearance-font-family, inherit);
+  background: var(--suk-appearance-background-color, #fff);
+  border: var(--suk-appearance-border-width, 1px) solid
+    var(--suk-appearance-border-color, #e5eaf0);
+  border-radius: var(--suk-appearance-border-radius, 10px);
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 10px;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  color: var(--suk-appearance-heading-color, #08245c);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.seeAll {
+  flex: 0 0 auto;
+  color: var(--suk-appearance-heading-color, #08245c);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.seeAll:hover,
+.seeAll:focus-visible {
+  text-decoration: underline;
+}
+
+.tabList {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 0 16px;
+  border-bottom: 1px solid #e5eaf0;
+  scrollbar-width: thin;
+}
+
+.tab {
+  appearance: none;
+  flex: 0 0 auto;
+  position: relative;
+  border: 0;
+  border-radius: 0;
+  padding: 14px 12px 13px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab:hover,
+.tab:focus-visible {
+  color: var(--suk-appearance-heading-color, #08245c);
+  background: rgba(8, 36, 92, 0.05);
+  outline: none;
+}
+
+.activeTab {
+  color: var(--suk-appearance-heading-color, #08245c);
+}
+
+.activeTab::after {
+  position: absolute;
+  right: 8px;
+  bottom: 0;
+  left: 8px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: #d7193f;
+  content: '';
+}
+
+.panel {
+  min-width: 0;
+  padding: 16px;
+}
+
+.textContent {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.55;
+}
+
+.links {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #e5eaf0;
+  border-radius: 8px;
+  color: var(--suk-appearance-heading-color, #08245c);
+  text-decoration: none;
+}
+
+.link:hover,
+.link:focus-visible {
+  border-color: #b6c4d8;
+  background: #f7f9fc;
+  outline: none;
+}
+
+.fileIcon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 28px;
+  border-radius: 4px;
+  background: #e9eff8;
+  color: #315b96;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.documentDetails {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.documentTitle {
+  display: block;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.documentDescription {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.documentDate {
+  flex: 0 0 auto;
+  color: #64748b;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.message {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.error {
+  color: #a4262c;
+}
+
+.empty {
+  padding: 14px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  text-align: center;
+}
+
+.configurationError {
+  padding: 16px;
+  border: 1px solid #d83b01;
+  border-radius: 8px;
+  color: #a4262c;
+  background: #fff4f2;
+}
+
+@container (max-width: 520px) {
+  .tabList {
+    padding: 0 8px;
+  }
+
+  .tab {
+    padding: 12px 10px;
+  }
+
+  .header {
+    padding: 12px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .documentDate {
+    display: none;
+  }
+}

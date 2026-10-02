@@ -1,0 +1,59 @@
+$font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+$text-color: #323f52;
+$heading-color: #08245c;
+$muted-color: #66758a;
+$border-color: #e5eaf0;
+$surface-color: #ffffff;
+$section-padding: 16px;
+$section-padding-compact: 12px;
+
+@mixin web-part-root {
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--suk-appearance-text-color, var(--bodyText, #{$text-color}));
+  font-family: var(
+    --suk-appearance-font-family,
+    var(--fontFamilyBase, #{$font-family})
+  );
+  line-height: 1.4;
+
+  --suk-space-1: 4px;
+  --suk-space-2: 8px;
+  --suk-space-3: 12px;
+  --suk-space-4: 16px;
+  --suk-space-5: 24px;
+}
+
+@mixin appearance-border {
+  border:
+    var(--suk-appearance-border-width, 1px)
+    solid
+    var(--suk-appearance-border-color, var(--neutralLight, #{$border-color}));
+  border-radius:
+    var(--suk-appearance-border-radius, 10px);
+}
+
+@mixin section-surface {
+  box-sizing: border-box;
+  @include appearance-border;
+  background: var(
+    --suk-appearance-background-color,
+    var(--white, #{$surface-color})
+  );
+}
+
+@mixin section-padding {
+  padding: $section-padding;
+
+  @media (max-width: 600px) {
+    padding: $section-padding-compact;
+  }
+}
+
+@mixin section-heading {
+  color: var(
+    --suk-appearance-heading-color,
+    var(--themePrimary, #{$heading-color})
+  );
+  font-weight: 700;
+}

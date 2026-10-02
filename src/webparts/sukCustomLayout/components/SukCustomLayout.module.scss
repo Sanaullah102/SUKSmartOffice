@@ -1,6 +1,8 @@
+@use '../../../styles/sukShared' as shared;
+
 .sukCustomLayout {
-  width: 100%;
-  box-sizing: border-box;
+  @include shared.web-part-root;
+  @include shared.appearance-border;
 }
 
 .column {
@@ -12,7 +14,7 @@
 .heading {
   margin: 0 0 12px 0;
   font-size: 24px;
-  font-weight: 600;
+  @include shared.section-heading;
   line-height: 1.25;
 }
 
@@ -27,7 +29,7 @@
   padding: 10px 18px;
   border-radius: 4px;
   text-decoration: none;
-  background: #0067b8;
+  background: #0f4c9a;
   color: #ffffff;
 
   &:hover {

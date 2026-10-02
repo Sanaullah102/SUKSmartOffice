@@ -30,6 +30,9 @@
 
         "sectionTitle": "Akses Pantas",
         "showSectionTitle": true,
+        "showSeeAll": false,
+        "seeAllText": "Lihat semua perkhidmatan",
+        "seeAllUrl": "",
         "sectionBackgroundColor": "#ffffff",
         "sectionPadding": 20,
 
@@ -37,6 +40,9 @@
         "tabletColumns": 3,
         "mobileColumns": 2,
         "gap": 12,
+        "displayStyle": "tiles",
+        "iconPosition": "top",
+        "showLinkBorder": true,
 
         "cardMinHeight": 128,
         "cardPadding": 16,

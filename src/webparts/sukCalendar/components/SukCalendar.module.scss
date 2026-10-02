@@ -1,0 +1,353 @@
+@use '../../../styles/sukShared' as shared;
+
+.calendar {
+  @include shared.web-part-root;
+  @include shared.section-surface;
+  @include shared.section-padding;
+  container-type: inline-size;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title {
+  @include shared.section-heading;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.25;
+}
+
+.titleIcon {
+  color: #0f4c9a;
+  font-size: 20px;
+}
+
+.seeAll {
+  flex: 0 0 auto;
+  color: #0f5db8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(270px, 0.88fr);
+  gap: 12px;
+  min-width: 0;
+}
+
+.calendarPanel,
+.agendaPanel {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #e8edf3;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.monthToolbar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  margin-bottom: 8px;
+}
+
+.monthLabel {
+  flex: 1;
+  min-width: 0;
+  color: var(
+    --suk-appearance-heading-color,
+    var(--themePrimary, #182b52)
+  );
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.navButton,
+.todayButton {
+  display: inline-grid;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  place-items: center;
+  border: 1px solid #dce3ec;
+  border-radius: 6px;
+  background: #fff;
+  color: #183765;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+
+  &:hover,
+  &:focus-visible {
+    border-color: #9db5d6;
+    background: #f5f8fc;
+  }
+}
+
+.todayButton {
+  font-weight: 600;
+}
+
+.weekdays,
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.weekday {
+  padding: 6px 2px;
+  color: var(--suk-appearance-text-color, #7b8798);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.dayCell {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 55px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 5px 4px;
+  overflow: hidden;
+  border: 1px solid #edf0f4;
+  background: #fff;
+  color: var(--suk-appearance-text-color, #29364b);
+  cursor: pointer;
+  text-align: left;
+
+  &:hover,
+  &:focus-visible {
+    z-index: 1;
+    border-color: #9bb6da;
+    background: #f4f8ff;
+    outline: none;
+  }
+}
+
+.outsideMonth {
+  color: #a3aab5;
+  background: #fbfcfd;
+}
+
+.selectedDay {
+  z-index: 2;
+  border-color: #1764c0;
+  background: #1764c0;
+  color: #fff;
+}
+
+.todayDay:not(.selectedDay) {
+  .dayNumber {
+    color: #0f5db8;
+    font-weight: 800;
+  }
+}
+
+.dayNumber {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.eventMarker {
+  display: block;
+  width: 100%;
+  margin-top: 2px;
+  padding: 2px 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #d7f3f7;
+  color: #164960;
+  font-size: 9px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selectedDay .eventMarker {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.moreEvents {
+  padding-left: 3px;
+  color: var(--suk-appearance-text-color, #66758a);
+  font-size: 9px;
+}
+
+.selectedDay .moreEvents {
+  color: #fff;
+}
+
+.agendaPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agendaHeading {
+  margin: 0;
+  padding: 0 0 9px;
+  border-bottom: 1px solid #e8edf3;
+  color: var(
+    --suk-appearance-heading-color,
+    var(--themePrimary, #182b52)
+  );
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.eventList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eventCard {
+  display: grid;
+  grid-template-columns: 4px minmax(58px, auto) minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  padding: 10px;
+  border: 1px solid #e9edf2;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(23, 43, 77, 0.04);
+  color: inherit;
+  text-decoration: none;
+}
+
+.eventAccent {
+  border-radius: 4px;
+  background: #2463c6;
+}
+
+.eventCard:nth-child(3n + 2) .eventAccent {
+  background: #dc3154;
+}
+
+.eventCard:nth-child(3n) .eventAccent {
+  background: #159568;
+}
+
+.eventTime {
+  padding-top: 2px;
+  color: var(--suk-appearance-text-color, #526176);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.eventDetails {
+  min-width: 0;
+}
+
+.eventTitle {
+  display: block;
+  overflow: hidden;
+  color: var(--suk-appearance-text-color, #263753);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.eventMeta {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--suk-appearance-text-color, #758196);
+  font-size: 11px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.emptyAgenda,
+.loading,
+.error {
+  display: grid;
+  min-height: 90px;
+  padding: 14px;
+  place-items: center;
+  color: var(--suk-appearance-text-color, #738096);
+  font-size: 13px;
+  text-align: center;
+}
+
+.error {
+  color: #a4262c;
+}
+
+.loading {
+  grid-column: 1 / -1;
+}
+
+@container (max-width: 680px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .agendaPanel {
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 540px) {
+  .dayCell {
+    min-height: 44px;
+    padding: 3px 2px;
+  }
+
+  .eventMarker {
+    height: 5px;
+    margin-top: 2px;
+    padding: 0;
+    border-radius: 3px;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .selectedDay .eventMarker {
+    background: #fff;
+  }
+
+  .moreEvents {
+    display: none;
+  }
+
+  .calendarPanel,
+  .agendaPanel {
+    padding: 9px;
+  }
+
+  .eventCard {
+    grid-template-columns: 4px minmax(52px, auto) minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+}

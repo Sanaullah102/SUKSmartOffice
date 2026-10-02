@@ -1,0 +1,149 @@
+@use '../../../styles/sukShared' as shared;
+
+.wrapper {
+  @include shared.web-part-root;
+  @include shared.section-surface;
+  @include shared.section-padding;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.heading {
+  @include shared.section-heading;
+  margin: 0 0 16px;
+  font-size: clamp(20px, 2.4vw, 27px);
+  line-height: 1.2;
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(var(--welcome-columns, 2), minmax(0, 1fr));
+  align-items: stretch;
+  gap: 14px;
+}
+
+.card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(14px, 2.2vw, 22px);
+  border: 1px solid #e6ebf2;
+  border-radius: 12px;
+  background: var(--suk-appearance-background-color, #fff);
+  box-shadow: 0 4px 18px rgba(25, 45, 78, 0.07);
+}
+
+.photo,
+.initials {
+  width: clamp(64px, 8vw, 92px);
+  height: clamp(64px, 8vw, 92px);
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 2px solid #e7edf5;
+  border-radius: 50%;
+}
+
+.photo {
+  display: block;
+  object-fit: cover;
+}
+
+.initials {
+  display: grid;
+  place-items: center;
+  background: #eef3fa;
+  color: #0f4c9a;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.details {
+  min-width: 0;
+  flex: 1;
+  padding-left: 14px;
+  border-left: 4px solid #0f4c9a;
+}
+
+.date {
+  display: block;
+  margin-bottom: 8px;
+  color: #596579;
+  font-size: 13px;
+}
+
+.name {
+  display: block;
+  overflow: hidden;
+  color: var(--suk-appearance-heading-color, #08245c);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+}
+
+.jobTitle,
+.department,
+.message {
+  display: block;
+  color: var(--suk-appearance-text-color, #39465a);
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.message {
+  margin-top: 9px;
+}
+
+.empty,
+.loading,
+.error {
+  padding: 20px;
+  border: 1px dashed #d5dce6;
+  border-radius: 10px;
+  color: #68758a;
+  text-align: center;
+}
+
+.error {
+  border-color: #efc3c5;
+  background: #fff8f8;
+  color: #a4262c;
+}
+
+@container (max-width: 620px) {
+  .people {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    align-items: flex-start;
+    padding: 13px;
+  }
+
+  .details {
+    padding-left: 10px;
+    border-left-width: 3px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+
+  .jobTitle,
+  .department,
+  .message {
+    font-size: 13px;
+  }
+}

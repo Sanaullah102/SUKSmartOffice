@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "6ccf4c1a-90de-4bcb-917c-4411be2111ac",
+  "alias": "SukGalleryWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "supportsFullBleed": true,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+  "preconfiguredEntries": [
+    {
+      "groupId": "cf066440-0614-43d6-98ae-0b31cf14c7c3",
+      "group": {
+        "default": "SUK Smart Office"
+      },
+      "title": {
+        "default": "SUK Gallery",
+        "ms-my": "Galeri SUK"
+      },
+      "description": {
+        "default": "Responsive image galleries and SharePoint folder showcases.",
+        "ms-my": "Galeri gambar responsif dan paparan folder SharePoint."
+      },
+      "officeFabricIconFontName": "PhotoCollection",
+      "properties": {
+        "galleryTitle": "Galeri Gambar",
+        "contentMode": "folders",
+        "itemLimit": 4,
+        "template": "feature",
+        "columns": 4,
+        "showSeeAll": true,
+        "seeAllText": "Lihat semua",
+        "showCounts": true,
+        "showCaptions": true,
+        "enableLightbox": true,
+        "pictureBorderWidth": 1,
+        "pictureBorderColor": "#e5eaf0",
+        "pictureBorderRadius": 8
+      }
+    }
+  ]
+}

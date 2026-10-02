@@ -233,7 +233,7 @@ React.FC<ISukAnnouncementsProps> = (props) => {
         return styles.badgeGeneral;
       }
 
-      return styles.badgeGeneral;
+      return styles.badgeNeutral;
 
     };
 
@@ -252,6 +252,29 @@ React.FC<ISukAnnouncementsProps> = (props) => {
 
     };
 
+  const formatCardDate = (value: string): { day: string; month: string } => {
+    if (!value) {
+      return { day: '', month: '' };
+    }
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return { day: '', month: '' };
+    }
+    return {
+      day: new Intl.DateTimeFormat('ms-MY', { day: '2-digit' }).format(date),
+      month: new Intl.DateTimeFormat('ms-MY', { month: 'short' })
+        .format(date)
+        .replace('.', '')
+    };
+  };
+
+  const styleClass: { [key in ISukAnnouncementsProps['displayStyle']]: string } = {
+    referenceCards: styles.referenceCards,
+    classicRows: styles.classicRows,
+    timeline: styles.timeline,
+    magazine: styles.magazine,
+    compactCards: styles.compactCards
+  };
 
   if (!props.listId) {
 
@@ -266,7 +289,9 @@ React.FC<ISukAnnouncementsProps> = (props) => {
 
   return (
 
-    <section className={styles.wrapper}>
+    <section className={`${styles.wrapper} ${
+      styleClass[props.displayStyle] || styles.referenceCards
+    }`}>
 
       <div className={styles.header}>
 
@@ -315,58 +340,56 @@ React.FC<ISukAnnouncementsProps> = (props) => {
       {
         !loading &&
         !error &&
-        items.map((item) => (
+        <div className={styles.items}>
+          {items.map((item) => {
+            const cardDate = formatCardDate(item.date);
+            return <a
+              key={item.Id}
+              href={getItemUrl(item.Id)}
+              className={styles.item}
+            >
+              {props.displayStyle === 'referenceCards' && <div className={styles.cardMeta}>
+                {item.category && <span
+                  className={`${styles.badge} ${getCategoryClass(item.category)}`}
+                >
+                  {item.category}
+                </span>}
+                <span className={styles.date}>{formatDate(item.date)}</span>
+              </div>}
 
-          <a
-            key={item.Id}
-            href={getItemUrl(item.Id)}
-            className={styles.item}
-          >
+              {props.displayStyle === 'timeline' && <div className={styles.timelineDate}>
+                <span className={styles.timelineDay}>{cardDate.day}</span>
+                <span className={styles.timelineMonth}>{cardDate.month}</span>
+              </div>}
 
-            {
-              item.category &&
-              (
-                <div className={styles.badgeArea}>
+              <span className={styles.documentIcon} aria-hidden="true">
+                <span className="ms-Icon ms-Icon--Page" />
+              </span>
 
-                  <span
-                    className={
-                      `${styles.badge} ` +
-                      `${getCategoryClass(
-                        item.category
-                      )}`
-                    }
-                  >
+              <span className={styles.content}>
+                {props.displayStyle !== 'referenceCards' &&
+                  props.displayStyle !== 'timeline' && <span className={styles.itemMeta}>
+                    {item.category && <span
+                      className={`${styles.badge} ${getCategoryClass(item.category)}`}
+                    >
+                      {item.category}
+                    </span>}
+                    <span className={styles.date}>{formatDate(item.date)}</span>
+                  </span>}
+
+                <span className={styles.itemTitle}>{item.title}</span>
+                <span
+                  className={styles.description}
+                  dangerouslySetInnerHTML={{ __html: item.description }}
+                />
+                {props.displayStyle === 'timeline' && item.category &&
+                  <span className={`${styles.badge} ${getCategoryClass(item.category)}`}>
                     {item.category}
-                  </span>
-
-                </div>
-              )
-            }
-
-
-            <div className={styles.content}>
-
-              <div className={styles.itemTitle}>
-                {item.title}
-              </div>
-
-              <div
-                className={styles.description}
-                dangerouslySetInnerHTML={{
-                  __html:
-                    item.description
-                }}
-              />
-
-              <div className={styles.date}>
-                {formatDate(item.date)}
-              </div>
-
-            </div>
-
-          </a>
-
-        ))
+                  </span>}
+              </span>
+            </a>;
+          })}
+        </div>
       }
 
     </section>

@@ -31,10 +31,15 @@ import {
   IBannerSourceOption,
   ISharePointFieldOption
 } from './services/BannerSourceService';
+import {
+  applyWebPartAppearance,
+  createWebPartAppearancePropertyPaneGroup,
+  IWebPartAppearanceSettings
+} from '../../styles/webPartAppearance';
 
 const NONE_FIELD = '__none__';
 
-export interface ISukBannerSliderWebPartProps {
+export interface ISukBannerSliderWebPartProps extends IWebPartAppearanceSettings {
   sourceType: BannerSourceType;
   existingSource: string;
   sourceTitle: string;
@@ -90,6 +95,7 @@ export default class SukBannerSliderWebPart
   }
 
   public render(): void {
+    applyWebPartAppearance(this.domElement, this.properties);
     void this._renderAsync();
   }
 
@@ -519,6 +525,7 @@ export default class SukBannerSliderWebPart
             description: 'Configure the dynamic SUK banner slider. Only image content is mandatory; all metadata mappings are optional.'
           },
           groups: [
+            createWebPartAppearancePropertyPaneGroup(this.properties),
             {
               groupName: '1. Banner Data Source',
               groupFields: [

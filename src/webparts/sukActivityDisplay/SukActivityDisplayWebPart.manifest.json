@@ -1,0 +1,49 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "0d7a06be-63de-4a84-a8dc-5d2098ddc164",
+  "alias": "SukActivityDisplayWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "supportsFullBleed": false,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+  "preconfiguredEntries": [
+    {
+      "groupId": "cf066440-0614-43d6-98ae-0b31cf14c7c3",
+      "group": {
+        "default": "SUK Smart Office"
+      },
+      "title": {
+        "default": "SUK Activity Display",
+        "ms-my": "Aktiviti SUK"
+      },
+      "description": {
+        "default": "Show upcoming monthly activities from a SharePoint list with flexible field mapping.",
+        "ms-my": "Paparkan aktiviti bulanan daripada senarai SharePoint dengan pemetaan medan."
+      },
+      "officeFabricIconFontName": "EventDate",
+      "properties": {
+        "title": "Kalender Aktiviti",
+        "mappingTitleField": "",
+        "mappingStartDateField": "",
+        "mappingEndDateField": "",
+        "mappingDescriptionField": "",
+        "mappingLocationField": "",
+        "mappingCategoryField": "",
+        "mappingLinkField": "",
+        "mappingOrganizerField": "",
+        "showSeeAll": true,
+        "showAddButton": true,
+        "itemLimit": 8,
+        "emptyMessage": "Tiada aktiviti untuk bulan ini.",
+        "appearanceMode": "theme",
+        "appearanceBorderWidth": 1,
+        "appearanceBorderColor": "#e5eaf0",
+        "appearanceBorderRadius": 10
+      }
+    }
+  ]
+}

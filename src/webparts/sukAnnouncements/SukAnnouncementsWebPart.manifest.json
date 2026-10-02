@@ -22,7 +22,11 @@
     "description": { "default": "SUK Announcements description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "SUK Announcements"
+      "description": "SUK Announcements",
+      "webPartTitle": "Pengumuman Terkini",
+      "itemLimit": 3,
+      "showSeeAll": true,
+      "displayStyle": "referenceCards"
     }
   }]
 }

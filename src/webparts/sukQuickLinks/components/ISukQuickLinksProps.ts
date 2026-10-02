@@ -10,9 +10,18 @@ export type QuickLinksTextAlign =
   | 'center'
   | 'right';
 
+export type QuickLinksDisplayStyle =
+  | 'tiles'
+  | 'iconStrip'
+  | 'serviceGrid'
+  | 'list'
+  | 'pills'
+  | 'compact';
+
 export interface IQuickLinkItem {
   id: string;
   text: string;
+  description?: string;
   iconUrl: string;
   linkUrl: string;
   openInNewTab: boolean;
@@ -27,9 +36,13 @@ export interface IQuickLinkItem {
 export interface ISukQuickLinksProps {
   items: IQuickLinkItem[];
   isEditMode: boolean;
+  displayStyle: QuickLinksDisplayStyle;
 
   sectionTitle: string;
   showSectionTitle: boolean;
+  showSeeAll: boolean;
+  seeAllText: string;
+  seeAllUrl: string;
   sectionBackgroundColor: string;
   sectionPadding: number;
 
@@ -37,6 +50,8 @@ export interface ISukQuickLinksProps {
   tabletColumns: number;
   mobileColumns: number;
   gap: number;
+  iconPosition: 'top' | 'left';
+  showLinkBorder: boolean;
 
   cardMinHeight: number;
   cardPadding: number;
