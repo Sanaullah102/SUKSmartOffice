@@ -1,8 +1,10 @@
 # SUK Activity Display
 
 The Activity Display shows a selected SharePoint list as a responsive monthly
-agenda. Choose a list, map its fields, and the web part loads that month's
-activities with previous/next month navigation.
+activity view. Choose a list, map its fields, and the web part loads that month's
+activities with previous/next month navigation. Five layouts are available:
+**Agenda** (the original list), **Activity cards**, **Timeline**, **Compact
+list**, and **Date focus**. Choose the layout in the Display settings.
 
 ## Field mapping
 

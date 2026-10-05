@@ -28,18 +28,49 @@ React.FC<ISukAnnouncementsProps> = (props) => {
   const [error, setError] =
     React.useState<string>('');
 
+  const readImageUrl = (value: unknown): string => {
+    let candidate = value;
+    if (typeof candidate === 'string' && candidate.trim().startsWith('{')) {
+      try {
+        candidate = JSON.parse(candidate) as unknown;
+      } catch {
+        return '';
+      }
+    }
+    if (candidate && typeof candidate === 'object') {
+      const image = candidate as { [key: string]: unknown };
+      candidate = image.serverRelativeUrl || image.ServerRelativeUrl ||
+        image.Url || image.url;
+    }
+    if (typeof candidate !== 'string' || !candidate.trim()) {
+      return '';
+    }
+    try {
+      const url = new URL(candidate.trim(), `${props.webAbsoluteUrl.replace(/\/$/, '')}/`);
+      return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : '';
+    } catch {
+      return '';
+    }
+  };
+
+  const plainText = (value: unknown): string =>
+    typeof value === 'string'
+      ? value.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/gi, ' ')
+        .replace(/&amp;/gi, '&').replace(/\s+/g, ' ').trim()
+      : value === undefined || value === null ? '' : String(value);
 
   React.useEffect(() => {
 
     if (!props.listId ||
         !props.titleField ||
-        !props.descriptionField ||
         !props.dateField) {
 
       setItems([]);
+      setLoading(false);
       return;
     }
 
+    let active = true;
     const loadData = async (): Promise<void> => {
 
       try {
@@ -88,14 +119,19 @@ React.FC<ISukAnnouncementsProps> = (props) => {
         const selectFields: string[] = [
           'Id',
           props.titleField,
-          props.descriptionField,
           props.dateField
         ];
 
+        if (props.descriptionField) {
+          selectFields.push(props.descriptionField);
+        }
         if (props.categoryField) {
           selectFields.push(
             props.categoryField
           );
+        }
+        if (props.imageField) {
+          selectFields.push(props.imageField);
         }
 
 
@@ -130,52 +166,66 @@ React.FC<ISukAnnouncementsProps> = (props) => {
           await itemsResponse.json();
 
 
-        const mappedItems:
-          ISukAnnouncementItem[] =
-          data.value.map((item: any) => ({
+        const mappedItems: ISukAnnouncementItem[] =
+          data.value.map((item: { [fieldName: string]: unknown }) => ({
 
             Id:
-              item.Id,
+              typeof item.Id === 'number' ? item.Id : 0,
 
             title:
-              item[props.titleField] || '',
+              plainText(item[props.titleField]),
 
             description:
-              item[props.descriptionField] || '',
+              props.descriptionField ? plainText(item[props.descriptionField]) : '',
 
             date:
-              item[props.dateField] || '',
+              plainText(item[props.dateField]),
 
             category:
               props.categoryField
-                ? item[props.categoryField]
-                : ''
+                ? plainText(item[props.categoryField])
+                : '',
+
+            imageUrl:
+              props.imageField ? readImageUrl(item[props.imageField]) : ''
 
           }));
 
 
-        setItems(mappedItems);
+        if (active) {
+          setItems(mappedItems);
+        }
 
       }
       catch (err) {
 
-        setError(
-          err instanceof Error
+        if (active) {
+          setError(
+            err instanceof Error
             ? err.message
-            : 'Unable to load announcements.'
-        );
+              : 'Unable to load announcements.'
+          );
+        }
 
       }
       finally {
 
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
 
       }
 
     };
 
 
-    loadData().catch(() => undefined);
+    loadData().catch((err: unknown) => {
+      if (active) {
+        setError(err instanceof Error ? err.message : 'Unable to load announcements.');
+        setLoading(false);
+      }
+    });
+    return () => { active = false; };
 
   }, [
     props.listId,
@@ -183,6 +233,7 @@ React.FC<ISukAnnouncementsProps> = (props) => {
     props.descriptionField,
     props.dateField,
     props.categoryField,
+    props.imageField,
     props.itemLimit,
     props.webAbsoluteUrl,
     props.spHttpClient
@@ -196,9 +247,10 @@ React.FC<ISukAnnouncementsProps> = (props) => {
         return '';
       }
 
-      const date =
-        new Date(value);
-
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
       return new Intl.DateTimeFormat(
         'ms-MY',
         {
@@ -288,112 +340,75 @@ React.FC<ISukAnnouncementsProps> = (props) => {
 
 
   return (
-
     <section className={`${styles.wrapper} ${
-      styleClass[props.displayStyle] || styles.referenceCards
+      styleClass[props.displayStyle] || styles.classicRows
     }`}>
+      <header className={styles.header}>
+        <h2>{props.webPartTitle || 'Pengumuman Terkini'}</h2>
+        {props.showSeeAll && listUrl && <a href={listUrl} className={styles.seeAll}>
+          Lihat semua <span aria-hidden="true">→</span>
+        </a>}
+      </header>
 
-      <div className={styles.header}>
+      {loading && <div className={styles.message} role="status">Memuatkan pengumuman...</div>}
+      {props.configurationError && <div className={styles.error} role="alert">
+        {props.configurationError}
+      </div>}
+      {!props.configurationError && error && <div className={styles.error} role="alert">{error}</div>}
+      {!props.configurationError && !loading && !error && items.length === 0 &&
+        <div className={styles.message}>Tiada pengumuman untuk dipaparkan.</div>}
+      {!props.configurationError && !loading && !error && items.length > 0 && <div className={styles.items}>
+        {items.map((item) => {
+          const cardDate = formatCardDate(item.date);
+          const badge = item.category && <span
+            className={`${styles.badge} ${getCategoryClass(item.category)}`}
+          >{item.category}</span>;
+          return <a
+            key={item.Id}
+            href={getItemUrl(item.Id)}
+            className={styles.item}
+          >
+            {props.displayStyle === 'classicRows' && item.category &&
+              <span className={styles.badgeArea}>{badge}</span>}
 
-        <h2>
-          {props.webPartTitle ||
-            'Pengumuman Terkini'}
-        </h2>
+            {props.displayStyle === 'referenceCards' && <span className={styles.cardMeta}>
+              {badge}
+              <time className={styles.date} dateTime={item.date}>{formatDate(item.date)}</time>
+            </span>}
 
-        {
-          props.showSeeAll &&
-          listUrl &&
-          (
-            <a
-              href={listUrl}
-              className={styles.seeAll}
-            >
-              Lihat semua
-              <span> →</span>
-            </a>
-          )
-        }
+            {props.displayStyle === 'timeline' && <span className={styles.timelineDate}>
+              <span className={styles.timelineDay}>{cardDate.day}</span>
+              <span className={styles.timelineMonth}>{cardDate.month}</span>
+            </span>}
 
-      </div>
+            {item.imageUrl && <span className={styles.imageFrame}>
+              <img className={styles.image} src={item.imageUrl} alt="" loading="lazy" />
+            </span>}
 
-
-      {
-        loading &&
-        (
-          <div className={styles.message}>
-            Memuatkan pengumuman...
-          </div>
-        )
-      }
-
-
-      {
-        error &&
-        (
-          <div className={styles.error}>
-            {error}
-          </div>
-        )
-      }
-
-
-      {
-        !loading &&
-        !error &&
-        <div className={styles.items}>
-          {items.map((item) => {
-            const cardDate = formatCardDate(item.date);
-            return <a
-              key={item.Id}
-              href={getItemUrl(item.Id)}
-              className={styles.item}
-            >
-              {props.displayStyle === 'referenceCards' && <div className={styles.cardMeta}>
-                {item.category && <span
-                  className={`${styles.badge} ${getCategoryClass(item.category)}`}
-                >
-                  {item.category}
+            <span className={styles.content}>
+              {props.displayStyle !== 'referenceCards' &&
+                props.displayStyle !== 'timeline' && <span className={styles.itemMeta}>
+                  {props.displayStyle !== 'classicRows' && badge}
+                  <time className={styles.date} dateTime={item.date}>{formatDate(item.date)}</time>
                 </span>}
-                <span className={styles.date}>{formatDate(item.date)}</span>
-              </div>}
 
-              {props.displayStyle === 'timeline' && <div className={styles.timelineDate}>
-                <span className={styles.timelineDay}>{cardDate.day}</span>
-                <span className={styles.timelineMonth}>{cardDate.month}</span>
-              </div>}
+              <span className={styles.itemTitle}>{item.title}</span>
+              {item.description && <span className={styles.description}>{item.description}</span>}
 
-              <span className={styles.documentIcon} aria-hidden="true">
-                <span className="ms-Icon ms-Icon--Page" />
-              </span>
+              {props.displayStyle === 'timeline' && <span className={styles.timelineMeta}>
+                {badge}
+                <time className={styles.date} dateTime={item.date}>{formatDate(item.date)}</time>
+              </span>}
 
-              <span className={styles.content}>
-                {props.displayStyle !== 'referenceCards' &&
-                  props.displayStyle !== 'timeline' && <span className={styles.itemMeta}>
-                    {item.category && <span
-                      className={`${styles.badge} ${getCategoryClass(item.category)}`}
-                    >
-                      {item.category}
-                    </span>}
-                    <span className={styles.date}>{formatDate(item.date)}</span>
-                  </span>}
-
-                <span className={styles.itemTitle}>{item.title}</span>
-                <span
-                  className={styles.description}
-                  dangerouslySetInnerHTML={{ __html: item.description }}
-                />
-                {props.displayStyle === 'timeline' && item.category &&
-                  <span className={`${styles.badge} ${getCategoryClass(item.category)}`}>
-                    {item.category}
-                  </span>}
-              </span>
-            </a>;
-          })}
-        </div>
-      }
-
+              {props.displayStyle === 'classicRows' && <span className={styles.rowDate}>
+                <time className={styles.date} dateTime={item.date}>{formatDate(item.date)}</time>
+              </span>}
+            </span>
+            <span className={styles.openIndicator} aria-hidden="true">›</span>
+          </a>;
+        })}
+      </div>}
     </section>
-
   );
 
 };

@@ -25,6 +25,7 @@ import {
 } from '../../styles/webPartAppearance';
 import SukActivityDisplay from './components/SukActivityDisplay';
 import {
+  ActivityDisplayStyle,
   IActivityFieldMappings,
   ISukActivityDisplayProps
 } from './components/ISukActivityDisplayProps';
@@ -54,6 +55,7 @@ interface ISharePointListRoot {
 export interface ISukActivityDisplayWebPartProps extends IWebPartAppearanceSettings {
   listId?: string;
   title: string;
+  displayStyle: ActivityDisplayStyle;
   mappingTitleField?: string;
   mappingStartDateField?: string;
   mappingEndDateField?: string;
@@ -122,6 +124,7 @@ export default class SukActivityDisplayWebPart
         listId: this.properties.listId,
         mappings: this._getMappings(),
         title: this.properties.title || 'Kalender Aktiviti',
+        displayStyle: this.properties.displayStyle || 'agenda',
         seeAllUrl: this.properties.seeAllUrl ||
           (this._listRootUrl ? `${this._listRootUrl}/AllItems.aspx` : ''),
         addNewUrl: this.properties.addNewUrl ||
@@ -177,6 +180,7 @@ export default class SukActivityDisplayWebPart
   private _applyDefaults(): void {
     const defaults: Partial<ISukActivityDisplayWebPartProps> = {
       title: 'Kalender Aktiviti',
+      displayStyle: 'agenda',
       showSeeAll: true,
       showAddButton: true,
       itemLimit: 8,
@@ -485,6 +489,17 @@ export default class SukActivityDisplayWebPart
             groupFields: [
               PropertyPaneTextField('title', {
                 label: 'Web part title'
+              }),
+              PropertyPaneDropdown('displayStyle', {
+                label: 'Activity display style',
+                selectedKey: this.properties.displayStyle || 'agenda',
+                options: [
+                  { key: 'agenda', text: 'Agenda (original)' },
+                  { key: 'cards', text: 'Activity cards' },
+                  { key: 'timeline', text: 'Timeline' },
+                  { key: 'compact', text: 'Compact list' },
+                  { key: 'dateFocus', text: 'Date focus' }
+                ]
               }),
               PropertyPaneSlider('itemLimit', {
                 label: 'Maximum activities per month',

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "19805fb4-a56c-4911-9632-20a78953a825",
+  "alias": "SukPersonnelMovementWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Advanced" },
+    "title": { "default": "SUK Personnel Movement" },
+    "description": { "default": "Configurable placement, transfer, and retirement notices." },
+    "officeFabricIconFontName": "People",
+    "properties": {
+      "title": "Pemberitahuan Penempatan/Bertukar",
+      "style": "table",
+      "itemLimit": 12,
+      "placementLabel": "Penempatan/Pertukaran",
+      "placementValue": "Penempatan/Pertukaran",
+      "retirementLabel": "Bersara",
+      "retirementValue": "Bersara",
+      "showCategories": true,
+      "showSeeAll": true,
+      "seeAllText": "Lihat Semua",
+      "emptyMessage": "Tiada maklumat untuk dipaparkan."
+    }
+  }]
+}

@@ -104,11 +104,26 @@ const formatDate = (value?: string): string => {
     : date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
-const NewsImage: React.FC<{ src?: string; title: string }> = ({ src, title }) => {
+const splitFilterValues = (value: string): string[] =>
+  value.split(/[,\r\n]+/).map((part) => part.trim().toLocaleLowerCase()).filter(Boolean);
+
+const NewsImage: React.FC<{
+  src?: string;
+  title: string;
+  fit: ISukNewsProps['imageFit'];
+  position: ISukNewsProps['imagePosition'];
+}> = ({ src, title, fit, position }) => {
   const [failed, setFailed] = React.useState(false);
   React.useEffect(() => setFailed(false), [src]);
   return src && !failed
-    ? <img className={styles.image} src={src} alt={title} loading="lazy" onError={() => setFailed(true)} />
+    ? <img
+      className={styles.image}
+      src={src}
+      alt={title}
+      loading="lazy"
+      style={{ objectFit: fit, objectPosition: position }}
+      onError={() => setFailed(true)}
+    />
     : <div className={styles.imagePlaceholder} aria-hidden="true">NEWS</div>;
 };
 
@@ -129,7 +144,18 @@ export default class SukNews extends React.Component<ISukNewsProps, ISukNewsStat
       previousProps.sourceType !== this.props.sourceType ||
       previousProps.sourceId !== this.props.sourceId ||
       JSON.stringify(previousProps.fields) !== JSON.stringify(this.props.fields) ||
-      previousProps.itemLimit !== this.props.itemLimit
+      previousProps.itemLimit !== this.props.itemLimit ||
+      previousProps.promotedFilter !== this.props.promotedFilter ||
+      previousProps.includeKeywords !== this.props.includeKeywords ||
+      previousProps.excludeKeywords !== this.props.excludeKeywords ||
+      previousProps.includedCategories !== this.props.includedCategories ||
+      previousProps.excludedCategories !== this.props.excludedCategories ||
+      previousProps.keywordMatch !== this.props.keywordMatch ||
+      previousProps.filterTextIn !== this.props.filterTextIn ||
+      previousProps.publishedWithinDays !== this.props.publishedWithinDays ||
+      previousProps.includeFutureDated !== this.props.includeFutureDated ||
+      previousProps.skipItems !== this.props.skipItems ||
+      previousProps.sortOrder !== this.props.sortOrder
     ) {
       this.refreshItems();
     }
@@ -167,18 +193,23 @@ export default class SukNews extends React.Component<ISukNewsProps, ISukNewsStat
       fields.link,
       fields.category,
       sourceType === 'newsPages' ? 'FileRef' : undefined,
-      sourceType === 'newsPages' && this.props.filterPromotedNews ? 'PromotedState' : undefined,
+      sourceType === 'newsPages' && this.props.hasPromotedState &&
+        this.props.promotedFilter !== 'all' ? 'PromotedState' : undefined,
       sourceType === 'newsPages' ? 'FSObjType' : undefined
     ].filter((field): field is string => Boolean(field))));
     const query = new URLSearchParams({
       '$select': selectedFields.join(','),
-      '$top': String(Math.max(1, Math.min(50, itemLimit || 6))),
+      '$top': '500',
       '$orderby': fields.publishDate ? `${fields.publishDate} desc` : 'Modified desc'
     });
     if (sourceType === 'newsPages') {
-      query.set('$filter', this.props.filterPromotedNews
-        ? 'FSObjType eq 0 and PromotedState eq 2'
-        : 'FSObjType eq 0');
+      const pageFilters = ['FSObjType eq 0'];
+      if (this.props.hasPromotedState && this.props.promotedFilter === 'promotedOnly') {
+        pageFilters.push('PromotedState eq 2');
+      } else if (this.props.hasPromotedState && this.props.promotedFilter === 'excludePromoted') {
+        pageFilters.push('PromotedState ne 2');
+      }
+      query.set('$filter', pageFilters.join(' and '));
     }
 
     const endpoint = `${webAbsoluteUrl.replace(/\/$/, '')}/_api/web/lists(guid'${sourceId}')/items?${query.toString()}`;
@@ -194,7 +225,7 @@ export default class SukNews extends React.Component<ISukNewsProps, ISukNewsStat
       if (version !== this.requestVersion) {
         return;
       }
-      const items = (payload.value || []).map((record, index): INewsItem => {
+      const mappedItems = (payload.value || []).map((record, index): INewsItem => {
         const title = textValue(record[fields.title]) || 'Untitled';
         const mappedLink = fields.link ? safeLink(record[fields.link], webAbsoluteUrl) : undefined;
         const pageLink = sourceType === 'newsPages'
@@ -211,6 +242,61 @@ export default class SukNews extends React.Component<ISukNewsProps, ISukNewsStat
             `${webAbsoluteUrl.replace(/\/$/, '')}/_layouts/15/listform.aspx?PageType=4&ListId=%7B${sourceId}%7D&ID=${record.Id}`
         };
       });
+      const includeKeywords = splitFilterValues(this.props.includeKeywords);
+      const excludeKeywords = splitFilterValues(this.props.excludeKeywords);
+      const includedCategories = splitFilterValues(this.props.includedCategories);
+      const excludedCategories = splitFilterValues(this.props.excludedCategories);
+      const now = Date.now();
+      const rangeStart = this.props.publishedWithinDays > 0
+        ? now - this.props.publishedWithinDays * 24 * 60 * 60 * 1000
+        : undefined;
+      const filteredItems = mappedItems.filter((item) => {
+        const category = (item.category || '').toLocaleLowerCase();
+        if (includedCategories.length && includedCategories.indexOf(category) < 0) {
+          return false;
+        }
+        if (excludedCategories.indexOf(category) >= 0) {
+          return false;
+        }
+
+        const searchableText = this.props.filterTextIn === 'title'
+          ? item.title
+          : this.props.filterTextIn === 'description'
+            ? item.description
+            : this.props.filterTextIn === 'category'
+              ? item.category || ''
+              : `${item.title} ${item.description} ${item.category || ''}`;
+        const normalizedText = searchableText.toLocaleLowerCase();
+        if (includeKeywords.length && (this.props.keywordMatch === 'all'
+          ? !includeKeywords.every((term) => normalizedText.includes(term))
+          : !includeKeywords.some((term) => normalizedText.includes(term)))) {
+          return false;
+        }
+        if (excludeKeywords.some((term) => normalizedText.includes(term))) {
+          return false;
+        }
+
+        const publishTime = item.publishDate ? new Date(item.publishDate).getTime() : NaN;
+        if (!this.props.includeFutureDated && !Number.isNaN(publishTime) && publishTime > now) {
+          return false;
+        }
+        if (rangeStart !== undefined &&
+          (Number.isNaN(publishTime) || publishTime < rangeStart || publishTime > now)) {
+          return false;
+        }
+        return true;
+      });
+      const sortedItems = filteredItems.sort((first, second) => {
+        if (this.props.sortOrder === 'titleAsc' || this.props.sortOrder === 'titleDesc') {
+          const comparison = first.title.localeCompare(second.title);
+          return this.props.sortOrder === 'titleAsc' ? comparison : -comparison;
+        }
+        const firstTime = first.publishDate ? new Date(first.publishDate).getTime() : 0;
+        const secondTime = second.publishDate ? new Date(second.publishDate).getTime() : 0;
+        return this.props.sortOrder === 'oldest' ? firstTime - secondTime : secondTime - firstTime;
+      });
+      const skipItems = Math.max(0, this.props.skipItems || 0);
+      const items = sortedItems.slice(skipItems, skipItems + Math.max(1, itemLimit || 6));
       this.setState({ items, loading: false, error: undefined });
     } catch (error) {
       if (version !== this.requestVersion) {
@@ -227,7 +313,12 @@ export default class SukNews extends React.Component<ISukNewsProps, ISukNewsStat
   private renderCard = (item: INewsItem, index: number, style: NewsDisplayStyle): React.ReactElement => (
     <a className={styles.card} href={item.url} key={`${item.id}-${index}`}>
       <div className={styles.imageFrame}>
-        <NewsImage src={item.imageUrl} title={item.title} />
+        <NewsImage
+          src={item.imageUrl}
+          title={item.title}
+          fit={this.props.imageFit}
+          position={this.props.imagePosition}
+        />
       </div>
       <div className={styles.body}>
         <div className={styles.meta}>

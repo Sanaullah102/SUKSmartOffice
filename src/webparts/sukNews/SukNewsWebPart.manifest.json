@@ -21,7 +21,16 @@
       "itemLimit": 6,
       "showSeeAll": true,
       "seeAllText": "See all",
-      "emptyMessage": "No news to display."
+      "emptyMessage": "No news to display.",
+      "promotedFilter": "all",
+      "keywordMatch": "any",
+      "filterTextIn": "all",
+      "publishedWithinDays": 0,
+      "includeFutureDated": true,
+      "skipItems": 0,
+      "sortOrder": "newest",
+      "imageFit": "cover",
+      "imagePosition": "center"
     }
   }]
 }

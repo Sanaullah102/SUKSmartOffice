@@ -27,6 +27,7 @@
       "officeFabricIconFontName": "EventDate",
       "properties": {
         "title": "Kalender Aktiviti",
+        "displayStyle": "agenda",
         "mappingTitleField": "",
         "mappingStartDateField": "",
         "mappingEndDateField": "",

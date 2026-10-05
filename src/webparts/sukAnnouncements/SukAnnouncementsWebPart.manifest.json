@@ -26,7 +26,8 @@
       "webPartTitle": "Pengumuman Terkini",
       "itemLimit": 3,
       "showSeeAll": true,
-      "displayStyle": "referenceCards"
+      "displayStyle": "classicRows",
+      "imageField": ""
     }
   }]
 }

@@ -13,6 +13,7 @@ export interface ISukAnnouncementItem {
   description: string;
   date: string;
   category?: string;
+  imageUrl?: string;
 }
 
 export interface ISukAnnouncementsProps {
@@ -32,6 +33,8 @@ export interface ISukAnnouncementsProps {
 
   categoryField?: string;
 
+  imageField?: string;
+
   itemLimit: number;
 
   clickMode: 'view' | 'edit';
@@ -39,4 +42,6 @@ export interface ISukAnnouncementsProps {
   showSeeAll: boolean;
 
   displayStyle: AnnouncementDisplayStyle;
+
+  configurationError?: string;
 }

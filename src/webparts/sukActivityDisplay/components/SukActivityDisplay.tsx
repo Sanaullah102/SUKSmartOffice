@@ -4,10 +4,19 @@ import {
   SPHttpClientResponse
 } from '@microsoft/sp-http';
 import {
+  ActivityDisplayStyle,
   IActivityFieldMappings,
   ISukActivityDisplayProps
 } from './ISukActivityDisplayProps';
 import styles from './SukActivityDisplay.module.scss';
+
+const styleClasses: { [style in ActivityDisplayStyle]: string } = {
+  agenda: styles.agenda,
+  cards: styles.cards,
+  timeline: styles.timeline,
+  compact: styles.compact,
+  dateFocus: styles.dateFocus
+};
 
 interface IRestActivityItem {
   Id: number;
@@ -265,7 +274,7 @@ const SukActivityDisplay: React.FC<ISukActivityDisplayProps> = (props) => {
   const addNewUrl = props.addNewUrl &&
     isSafeUrl(props.addNewUrl) ? props.addNewUrl : undefined;
 
-  return <section className={styles.activity}>
+  return <section className={`${styles.activity} ${styleClasses[props.displayStyle || 'agenda']}`}>
     <header className={styles.header}>
       <h2 className={styles.title}>
         <span className={`ms-Icon ms-Icon--Calendar ${styles.titleIcon}`}

@@ -1,5 +1,12 @@
 import { SPHttpClient } from '@microsoft/sp-http';
 
+export type ActivityDisplayStyle =
+  | 'agenda'
+  | 'cards'
+  | 'timeline'
+  | 'compact'
+  | 'dateFocus';
+
 export interface IActivityFieldMappings {
   title: string;
   startDate: string;
@@ -17,6 +24,7 @@ export interface ISukActivityDisplayProps {
   listId?: string;
   mappings: IActivityFieldMappings;
   title: string;
+  displayStyle: ActivityDisplayStyle;
   seeAllUrl?: string;
   addNewUrl?: string;
   showSeeAll: boolean;

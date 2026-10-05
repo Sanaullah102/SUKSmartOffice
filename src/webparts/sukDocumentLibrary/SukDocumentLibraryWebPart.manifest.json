@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "f0a58f1e-a3f4-4ec0-b08d-694a0d15b41f",
+  "alias": "SukDocumentLibraryWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Advanced" },
+    "title": { "default": "SUK Document Library" },
+    "description": { "default": "Browse, search, and group documents from a SharePoint library." },
+    "officeFabricIconFontName": "DocumentSet",
+    "properties": {
+      "title": "Documents",
+      "description": "",
+      "displayStyle": "list",
+      "contentMode": "files",
+      "folderIconMode": "default",
+      "itemLimit": 50,
+      "showSearch": true,
+      "searchPlaceholder": "Search documents and folders",
+      "searchButtonText": "Search",
+      "showBreadcrumbs": true,
+      "allowFolderNavigation": true,
+      "recursive": false,
+      "sortField": "Modified",
+      "sortDirection": "desc",
+      "showModifiedDate": true,
+      "showFileSize": true,
+      "showGroupTabs": true,
+      "allTabLabel": "All",
+      "emptyMessage": "No documents or folders found."
+    }
+  }]
+}

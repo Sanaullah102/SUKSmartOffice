@@ -1,16 +1,12 @@
 # SUK Announcements
 
-The announcements web part supports five responsive display styles:
+SUK Announcements supports five responsive layouts. **Classic rows** is the
+default and follows the reference format: category badge at the left, followed
+by title, optional two-line description, and date. Other layouts are **Status
+cards**, **Timeline**, **Magazine layout**, and **Compact cards**.
 
-- **Status cards (reference)** displays category/status badge and date above a
-  document icon, title, and two-line summary in horizontal cards.
-- **Classic rows** preserves the original simple vertical announcement list.
-- **Timeline** shows a prominent date badge beside each announcement.
-- **Magazine cards** gives the first announcement more prominence, followed by
-  supporting cards.
-- **Compact cards** shows smaller cards with date and category metadata.
-
-Choose a style from **Announcement display style** in the property pane. Existing
-SharePoint list and field mappings remain in use. Map the category/status column
-to get badges; `PENTING`, `INFO`, `HEBAHAN`, and `MAKLUMAN` receive distinct
-colors. The title, description, and date mappings are used across all styles.
+Map title and date, and optionally description and category. `PENTING`, `INFO`,
+`HEBAHAN`, and `MAKLUMAN` status values receive distinct badge colors. An
+optional image/thumbnail column can be mapped; no document icon or placeholder
+image is displayed when no image is available. The image field accepts SharePoint
+image values, image URLs, and URL/text fields containing image paths.

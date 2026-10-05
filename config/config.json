@@ -93,6 +93,30 @@
           "manifest": "./src/webparts/sukNews/SukNewsWebPart.manifest.json"
         }
       ]
+    },
+    "suk-personnel-movement-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukPersonnelMovement/SukPersonnelMovementWebPart.js",
+          "manifest": "./src/webparts/sukPersonnelMovement/SukPersonnelMovementWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-document-library-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukDocumentLibrary/SukDocumentLibraryWebPart.js",
+          "manifest": "./src/webparts/sukDocumentLibrary/SukDocumentLibraryWebPart.manifest.json"
+        }
+      ]
+    },
+    "suk-social-media-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sukSocialMedia/SukSocialMediaWebPart.js",
+          "manifest": "./src/webparts/sukSocialMedia/SukSocialMediaWebPart.manifest.json"
+        }
+      ]
     }
   },
 

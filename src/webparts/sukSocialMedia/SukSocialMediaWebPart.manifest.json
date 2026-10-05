@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "987febbc-b6f0-41ed-a552-69e5cb8fd884",
+  "alias": "SukSocialMediaWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Advanced" },
+    "title": { "default": "SUK Social Media" },
+    "description": { "default": "Social profile links and approved embedded feeds." },
+    "officeFabricIconFontName": "Share",
+    "properties": {
+      "title": "Ikuti Kami",
+      "description": "",
+      "accountsJson": "[]",
+      "style": "socialCards",
+      "columns": 3,
+      "showGroupTabs": true,
+      "allTabLabel": "Semua",
+      "showDescriptions": true,
+      "showHandles": true,
+      "openInNewTab": true,
+      "embedHeight": 420
+    }
+  }]
+}

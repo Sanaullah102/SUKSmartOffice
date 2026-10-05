@@ -42,6 +42,17 @@ interface IListField {
   ReadOnlyField: boolean;
 }
 
+interface IListInfo {
+  Id: string;
+  Title: string;
+  Hidden: boolean;
+  BaseType: number;
+}
+
+interface IRestCollection<T> {
+  value: T[];
+}
+
 
 export interface ISukAnnouncementsWebPartProps extends IWebPartAppearanceSettings {
 
@@ -56,6 +67,8 @@ export interface ISukAnnouncementsWebPartProps extends IWebPartAppearanceSetting
   dateField: string;
 
   categoryField: string;
+
+  imageField: string;
 
   itemLimit: number;
 
@@ -93,19 +106,25 @@ export default class SukAnnouncementsWebPart
   private _categoryFieldOptions:
     IPropertyPaneDropdownOption[] = [];
 
+  private _imageFieldOptions:
+    IPropertyPaneDropdownOption[] = [];
+
+  private _configurationError = '';
+
 
   public async onInit(): Promise<void> {
 
     await super.onInit();
 
-    await this._loadLists();
-
-    if (this.properties.listId) {
-
-      await this._loadFields(
-        this.properties.listId
-      );
-
+    try {
+      await this._loadLists();
+      if (this.properties.listId) {
+        await this._loadFields(this.properties.listId);
+      }
+    } catch (error) {
+      this._configurationError = error instanceof Error
+        ? error.message
+        : 'Unable to load announcement settings from SharePoint.';
     }
 
   }
@@ -146,6 +165,9 @@ export default class SukAnnouncementsWebPart
           categoryField:
             this.properties.categoryField,
 
+          imageField:
+            this.properties.imageField,
+
           itemLimit:
             this.properties.itemLimit || 3,
 
@@ -156,7 +178,10 @@ export default class SukAnnouncementsWebPart
             this.properties.showSeeAll !== false,
 
           displayStyle:
-            this.properties.displayStyle || 'referenceCards'
+            this.properties.displayStyle || 'classicRows',
+
+          configurationError:
+            this._configurationError
 
         }
       );
@@ -196,12 +221,11 @@ export default class SukAnnouncementsWebPart
 
 
     if (!response.ok) {
-      return;
+      throw new Error(`Unable to load announcement lists (${response.status} ${response.statusText}).`);
     }
 
 
-    const data =
-      await response.json();
+    const data = await response.json() as IRestCollection<IListInfo>;
 
 
     /*
@@ -213,12 +237,12 @@ export default class SukAnnouncementsWebPart
       data.value
 
         .filter(
-          (list: any) =>
+          (list) =>
             list.BaseType === 0
         )
 
         .map(
-          (list: any) => ({
+          (list) => ({
             key: list.Id,
             text: list.Title
           })
@@ -255,17 +279,16 @@ export default class SukAnnouncementsWebPart
 
 
     if (!response.ok) {
-      return;
+      throw new Error(`Unable to load announcement fields (${response.status} ${response.statusText}).`);
     }
 
 
-    const data =
-      await response.json();
+    const data = await response.json() as IRestCollection<IListField>;
 
 
     const fields: IListField[] =
       data.value.filter(
-        (field: IListField) =>
+        (field) =>
           !field.Hidden
       );
 
@@ -357,13 +380,28 @@ export default class SukAnnouncementsWebPart
         )
     ];
 
+    this._imageFieldOptions = [
+      { key: '', text: '(None)' },
+      ...fields
+        .filter((field) =>
+          field.TypeAsString === 'Thumbnail' ||
+          field.TypeAsString === 'Image' ||
+          field.TypeAsString === 'URL' ||
+          field.TypeAsString === 'Text'
+        )
+        .map((field) => ({
+          key: field.InternalName,
+          text: field.Title
+        }))
+    ];
+
   }
 
 
   protected onPropertyPaneFieldChanged(
     propertyPath: string,
-    oldValue: any,
-    newValue: any
+    oldValue: unknown,
+    newValue: unknown
   ): void {
 
     super.onPropertyPaneFieldChanged(
@@ -385,11 +423,18 @@ export default class SukAnnouncementsWebPart
       this.properties.dateField = '';
 
       this.properties.categoryField = '';
+      this.properties.imageField = '';
+      this._configurationError = '';
 
-
+      if (typeof newValue !== 'string' || !newValue) {
+        this._imageFieldOptions = [];
+        this.render();
+        return;
+      }
       this._loadFields(newValue)
 
         .then(() => {
+          this._configurationError = '';
 
           this.context.propertyPane.refresh();
 
@@ -397,7 +442,13 @@ export default class SukAnnouncementsWebPart
 
         })
 
-        .catch(() => undefined);
+        .catch((error: unknown) => {
+          this._configurationError = error instanceof Error
+            ? error.message
+            : 'Unable to load fields for the selected list.';
+          this.context.propertyPane.refresh();
+          this.render();
+        });
 
     }
 
@@ -414,7 +465,7 @@ export default class SukAnnouncementsWebPart
         {
 
           header: {
-            description:
+            description: this._configurationError ||
               'Configure SUK Pengumuman Terkini'
           },
 
@@ -482,11 +533,12 @@ export default class SukAnnouncementsWebPart
                   'displayStyle',
                   {
                     label: 'Announcement display style',
+                    selectedKey: this.properties.displayStyle || 'classicRows',
                     options: [
-                      { key: 'referenceCards', text: 'Status cards (reference)' },
-                      { key: 'classicRows', text: 'Classic rows' },
+                      { key: 'classicRows', text: 'Classic rows (reference format)' },
+                      { key: 'referenceCards', text: 'Status cards' },
                       { key: 'timeline', text: 'Timeline' },
-                      { key: 'magazine', text: 'Magazine cards' },
+                      { key: 'magazine', text: 'Magazine layout' },
                       { key: 'compactCards', text: 'Compact cards' }
                     ]
                   }
@@ -557,6 +609,16 @@ export default class SukAnnouncementsWebPart
 
                     disabled:
                       !this.properties.listId
+                  }
+                ),
+
+                PropertyPaneDropdown(
+                  'imageField',
+                  {
+                    label: 'Optional Image / Thumbnail Column',
+                    options: this._imageFieldOptions,
+                    selectedKey: this.properties.imageField || '',
+                    disabled: !this.properties.listId
                   }
                 )
 

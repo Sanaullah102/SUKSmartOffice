@@ -15,6 +15,11 @@ import {
   INewsFieldMappings,
   ISukNewsProps,
   NewsDisplayStyle,
+  NewsImageFit,
+  NewsImagePosition,
+  NewsKeywordMatch,
+  NewsPromotedFilter,
+  NewsSortOrder,
   NewsSourceType
 } from './components/ISukNewsProps';
 import {
@@ -56,6 +61,19 @@ export interface ISukNewsWebPartProps extends IWebPartAppearanceSettings {
   seeAllText: string;
   seeAllUrl: string;
   emptyMessage: string;
+  promotedFilter: NewsPromotedFilter;
+  includeKeywords: string;
+  excludeKeywords: string;
+  includedCategories: string;
+  excludedCategories: string;
+  keywordMatch: NewsKeywordMatch;
+  filterTextIn: 'all' | 'title' | 'description' | 'category';
+  publishedWithinDays: number;
+  includeFutureDated: boolean;
+  skipItems: number;
+  sortOrder: NewsSortOrder;
+  imageFit: NewsImageFit;
+  imagePosition: NewsImagePosition;
 }
 
 export default class SukNewsWebPart extends BaseClientSideWebPart<ISukNewsWebPartProps> {
@@ -89,7 +107,18 @@ export default class SukNewsWebPart extends BaseClientSideWebPart<ISukNewsWebPar
       spHttpClient: this.context.spHttpClient,
       sourceType: this.properties.sourceType || 'newsPages',
       sourceId: this.properties.sourceId,
-      filterPromotedNews: this._hasPromotedState,
+      hasPromotedState: this._hasPromotedState,
+      promotedFilter: this.properties.promotedFilter || 'all',
+      includeKeywords: this.properties.includeKeywords || '',
+      excludeKeywords: this.properties.excludeKeywords || '',
+      includedCategories: this.properties.includedCategories || '',
+      excludedCategories: this.properties.excludedCategories || '',
+      keywordMatch: this.properties.keywordMatch || 'any',
+      filterTextIn: this.properties.filterTextIn || 'all',
+      publishedWithinDays: Number(this.properties.publishedWithinDays) || 0,
+      includeFutureDated: this.properties.includeFutureDated !== false,
+      skipItems: this.properties.skipItems || 0,
+      sortOrder: this.properties.sortOrder || 'newest',
       fields,
       title: this.properties.title || 'Latest News',
       displayStyle: this.properties.displayStyle || 'cardGrid',
@@ -98,6 +127,8 @@ export default class SukNewsWebPart extends BaseClientSideWebPart<ISukNewsWebPar
       seeAllText: this.properties.seeAllText || 'See all',
       seeAllUrl: this.properties.seeAllUrl,
       emptyMessage: this.properties.emptyMessage || 'No news to display.',
+      imageFit: this.properties.imageFit || 'cover',
+      imagePosition: this.properties.imagePosition || 'center',
       configurationError: this._configurationError
     });
     ReactDom.render(element, this.domElement);
@@ -205,11 +236,11 @@ export default class SukNewsWebPart extends BaseClientSideWebPart<ISukNewsWebPar
               label: 'Display style',
               selectedKey: this.properties.displayStyle || 'cardGrid',
               options: [
-                { key: 'cardGrid', text: 'Reference 1 - Image cards' },
-                { key: 'splitCards', text: 'Reference 2 - Read-more cards' },
-                { key: 'editorial', text: 'Reference 3 - Editorial columns' },
-                { key: 'featured', text: 'Featured story' },
-                { key: 'compact', text: 'Compact news list' }
+                { key: 'cardGrid', text: 'Image-led card grid' },
+                { key: 'splitCards', text: 'Horizontal story rows' },
+                { key: 'editorial', text: 'Editorial columns' },
+                { key: 'featured', text: 'Featured lead story' },
+                { key: 'compact', text: 'Compact headlines' }
               ]
             }),
             PropertyPaneSlider('itemLimit', {
@@ -230,6 +261,112 @@ export default class SukNewsWebPart extends BaseClientSideWebPart<ISukNewsWebPar
               description: 'Enter a full URL or a path relative to this SharePoint site.'
             }),
             PropertyPaneTextField('emptyMessage', { label: 'Empty-state message' })
+          ]
+        }, {
+          groupName: 'Filters and sorting',
+          groupFields: [
+            ...(sourceType === 'newsPages' ? [PropertyPaneDropdown('promotedFilter', {
+              label: 'News page inclusion',
+              selectedKey: this.properties.promotedFilter || 'all',
+              options: [
+                { key: 'all', text: 'Include all pages' },
+                { key: 'promotedOnly', text: 'Only promoted news posts' },
+                { key: 'excludePromoted', text: 'Exclude promoted news posts' }
+              ],
+              disabled: !this._hasPromotedState && this._fieldSourceLoaded === this.properties.sourceId
+            })] : []),
+            PropertyPaneTextField('includeKeywords', {
+              label: 'Include keywords (comma or line separated)',
+              description: 'Items must match the selected keyword rule.'
+            }),
+            PropertyPaneDropdown('keywordMatch', {
+              label: 'Included keyword rule',
+              selectedKey: this.properties.keywordMatch || 'any',
+              options: [
+                { key: 'any', text: 'Match any included keyword' },
+                { key: 'all', text: 'Match all included keywords' }
+              ]
+            }),
+            PropertyPaneTextField('excludeKeywords', {
+              label: 'Exclude keywords (comma or line separated)',
+              description: 'Any item matching an excluded keyword is removed.'
+            }),
+            PropertyPaneDropdown('filterTextIn', {
+              label: 'Search keywords in',
+              selectedKey: this.properties.filterTextIn || 'all',
+              options: [
+                { key: 'all', text: 'Title, summary and category' },
+                { key: 'title', text: 'Title only' },
+                { key: 'description', text: 'Summary only' },
+                { key: 'category', text: 'Category only' }
+              ]
+            }),
+            PropertyPaneTextField('includedCategories', {
+              label: 'Include categories (comma or line separated)'
+            }),
+            PropertyPaneTextField('excludedCategories', {
+              label: 'Exclude categories (comma or line separated)'
+            }),
+            PropertyPaneDropdown('publishedWithinDays', {
+              label: 'Publication date range',
+              selectedKey: String(this.properties.publishedWithinDays || 0),
+              options: [
+                { key: '0', text: 'Any date' },
+                { key: '7', text: 'Last 7 days' },
+                { key: '30', text: 'Last 30 days' },
+                { key: '90', text: 'Last 90 days' },
+                { key: '365', text: 'Last year' }
+              ],
+              disabled: !this.properties.publishDateField
+            }),
+            PropertyPaneToggle('includeFutureDated', {
+              label: 'Include future-dated items',
+              checked: this.properties.includeFutureDated !== false
+            }),
+            PropertyPaneDropdown('sortOrder', {
+              label: 'Sort results',
+              selectedKey: this.properties.sortOrder || 'newest',
+              options: [
+                { key: 'newest', text: 'Newest first' },
+                { key: 'oldest', text: 'Oldest first' },
+                { key: 'titleAsc', text: 'Title A to Z' },
+                { key: 'titleDesc', text: 'Title Z to A' }
+              ]
+            }),
+            PropertyPaneSlider('skipItems', {
+              label: 'Skip matching items',
+              min: 0,
+              max: 100,
+              step: 1,
+              showValue: true,
+              value: this.properties.skipItems || 0
+            })
+          ]
+        }, {
+          groupName: 'Image display',
+          groupFields: [
+            PropertyPaneDropdown('imageFit', {
+              label: 'Image sizing',
+              selectedKey: this.properties.imageFit || 'cover',
+              options: [
+                { key: 'cover', text: 'Fill frame (crop edges)' },
+                { key: 'contain', text: 'Fit inside frame' },
+                { key: 'fill', text: 'Stretch to fill frame' },
+                { key: 'none', text: 'Original size' },
+                { key: 'scale-down', text: 'Scale down only' }
+              ]
+            }),
+            PropertyPaneDropdown('imagePosition', {
+              label: 'Image alignment',
+              selectedKey: this.properties.imagePosition || 'center',
+              options: [
+                { key: 'center', text: 'Center' },
+                { key: 'top', text: 'Top' },
+                { key: 'bottom', text: 'Bottom' },
+                { key: 'left', text: 'Left' },
+                { key: 'right', text: 'Right' }
+              ]
+            })
           ]
         }, createWebPartAppearancePropertyPaneGroup(this.properties)]
       }]

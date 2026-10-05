@@ -9,6 +9,12 @@ export type NewsDisplayStyle =
   | 'featured'
   | 'compact';
 
+export type NewsPromotedFilter = 'all' | 'promotedOnly' | 'excludePromoted';
+export type NewsSortOrder = 'newest' | 'oldest' | 'titleAsc' | 'titleDesc';
+export type NewsKeywordMatch = 'any' | 'all';
+export type NewsImageFit = 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+export type NewsImagePosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
+
 export interface INewsFieldMappings {
   title: string;
   description?: string;
@@ -23,7 +29,18 @@ export interface ISukNewsProps {
   spHttpClient: SPHttpClient;
   sourceType: NewsSourceType;
   sourceId?: string;
-  filterPromotedNews: boolean;
+  hasPromotedState: boolean;
+  promotedFilter: NewsPromotedFilter;
+  includeKeywords: string;
+  excludeKeywords: string;
+  includedCategories: string;
+  excludedCategories: string;
+  keywordMatch: NewsKeywordMatch;
+  filterTextIn: 'all' | 'title' | 'description' | 'category';
+  publishedWithinDays: number;
+  includeFutureDated: boolean;
+  skipItems: number;
+  sortOrder: NewsSortOrder;
   fields: INewsFieldMappings;
   title: string;
   displayStyle: NewsDisplayStyle;
@@ -32,5 +49,7 @@ export interface ISukNewsProps {
   seeAllText: string;
   seeAllUrl?: string;
   emptyMessage: string;
+  imageFit: NewsImageFit;
+  imagePosition: NewsImagePosition;
   configurationError?: string;
 }
